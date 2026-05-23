@@ -53,3 +53,17 @@ dkms.conf
 
 # debug information files
 *.dwo
+# Ignorar configuraciones locales de VS Code y MCUXpresso
+.vscode/
+.settings/
+*.launch
+
+# Ignorar archivos generados por la compilación (binarios, objetos)
+Debug/
+Release/
+*.bin
+*.axf
+*.map
+*.o
+*.d
+src/oracleJdk-26/
