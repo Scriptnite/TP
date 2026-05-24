@@ -8,5 +8,6 @@ void conf_uart0(void);
 void conf_dac(void);
 void conf_gpio(void);
 void conf_i2c(void);
+void conf_adc(void);
 
 #endif /* CONFIG_GLOBAL_H_ */
