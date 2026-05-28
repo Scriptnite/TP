@@ -52,4 +52,3 @@ los parametros de estos.
 * `/inc`: Archivos “headers” (.h) con las definiciones y prototipos.
 * `/utils`: Librerías de abstracción a la placa, para procesamiento de datos.
 * `/docs`: Esquemas electrónicos del circuito, y demás.
-* `/startup`: Archivos (.c) de in civilization del proyecto, aquí se encuentra el main.

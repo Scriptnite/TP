@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.scriptnite.UI.View">
+  <grid id="27dc6" binding="panelPrincipal" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="1200" height="750"/>
+    </constraints>
+    <properties>
+      <maximumSize width="1200" height="750"/>
+      <minimumSize width="1200" height="750"/>
+      <preferredSize width="1200" height="750"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <splitpane id="15d0f">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <continuousLayout value="true"/>
+          <dividerLocation value="750"/>
+          <minimumSize width="-1" height="1"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="6316e" binding="contentPanelLeft" layout-manager="FormLayout">
+            <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:d:noGrow"/>
+            <rowspec value="center:d:noGrow"/>
+            <colspec value="fill:d:grow"/>
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties>
+              <maximumSize width="2147483647" height="750"/>
+              <minimumSize width="350" height="750"/>
+              <preferredSize width="350" height="750"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <grid id="1eddf" binding="contentGraphPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="2147483647" height="520"/>
+                  <minimumSize width="650" height="520"/>
+                  <preferredSize width="750" height="520"/>
+                </properties>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <grid id="281f1" layout-manager="FlowLayout" hgap="0" vgap="0" flow-align="1">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="2147483647" height="200"/>
+                  <minimumSize width="0" height="200"/>
+                  <preferredSize width="0" height="200"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="5813a" binding="containerUARTConsoleScrollPane">
+                    <constraints/>
+                    <properties>
+                      <autoscrolls value="true"/>
+                      <doubleBuffered value="true"/>
+                      <horizontalScrollBarPolicy value="31"/>
+                      <maximumSize width="32767" height="180"/>
+                      <minimumSize width="18" height="180"/>
+                      <preferredSize width="450" height="180"/>
+                      <requestFocusEnabled value="false"/>
+                      <verticalScrollBarPolicy value="22"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="1e3c" class="javax.swing.JTextArea" binding="UARTConsoleTextArea" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <autoscrolls value="true"/>
+                          <background color="-15987700"/>
+                          <caretColor color="-789517"/>
+                          <doubleBuffered value="true"/>
+                          <font name="Consolas"/>
+                          <requestFocusEnabled value="true"/>
+                          <tabSize value="4"/>
+                          <text value=""/>
+                          <wrapStyleWord value="true"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <grid id="5c670" binding="configsConsoleContainerPanel" layout-manager="FormLayout">
+                    <rowspec value="center:40px:noGrow"/>
+                    <rowspec value="top:5pt:noGrow"/>
+                    <rowspec value="center:d:noGrow"/>
+                    <rowspec value="top:36dlu:noGrow"/>
+                    <rowspec value="center:max(d;4px):noGrow"/>
+                    <colspec value="fill:d:grow"/>
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="2147483647" height="220"/>
+                      <minimumSize width="-1" height="200"/>
+                      <preferredSize width="275" height="200"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="186d4" class="javax.swing.JComboBox" binding="baudiosComboBox">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                          <forms/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="32767" height="35"/>
+                          <minimumSize width="-1" height="35"/>
+                          <model>
+                            <item value="2400"/>
+                            <item value="4800"/>
+                            <item value="9600"/>
+                            <item value="19200"/>
+                            <item value="38400"/>
+                            <item value="57600"/>
+                            <item value="115200"/>
+                          </model>
+                        </properties>
+                      </component>
+                      <component id="a1e6a" class="javax.swing.JComboBox" binding="puertoComboBox">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="10" fill="1" indent="0" use-parent-layout="false"/>
+                          <forms defaultalign-vert="false"/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="32767" height="35"/>
+                          <minimumSize width="-1" height="35"/>
+                          <preferredSize width="80" height="35"/>
+                        </properties>
+                      </component>
+                      <component id="4a95b" class="javax.swing.JButton" binding="limpiarDatosButton">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <forms/>
+                        </constraints>
+                        <properties>
+                          <maximumSize width="-1" height="35"/>
+                          <minimumSize width="-1" height="35"/>
+                          <preferredSize width="118" height="35"/>
+                          <text value="Limpiar Datos"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="4b2e5" binding="contentPanelRigth" layout-manager="FormLayout">
+            <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:d:noGrow"/>
+            <rowspec value="top:d:noGrow"/>
+            <rowspec value="top:15pt:noGrow"/>
+            <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:15pt:noGrow"/>
+            <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:15pt:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:15pt:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:128dlu:noGrow"/>
+            <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:12dlu:noGrow"/>
+            <rowspec value="center:d:noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <colspec value="fill:331px:grow"/>
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties>
+              <alignmentY value="0.5"/>
+              <enabled value="true"/>
+              <minimumSize width="350" height="-1"/>
+              <preferredSize width="-1" height="-1"/>
+            </properties>
+            <clientProperties>
+              <html.disable class="java.lang.Boolean" value="false"/>
+            </clientProperties>
+            <border type="none">
+              <font/>
+              <title-color color="-4473925"/>
+            </border>
+            <children>
+              <component id="993db" class="javax.swing.JLabel" binding="anguloEspecificoLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <font name="Consolas" size="18" style="1"/>
+                  <text value="Por Angulo Especifo"/>
+                </properties>
+              </component>
+              <component id="23c03" class="javax.swing.JLabel" binding="rangoAngulosLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <font name="Consolas" size="18" style="1"/>
+                  <text value="Por Rango de Angulos"/>
+                </properties>
+              </component>
+              <component id="ee727" class="javax.swing.JSlider" binding="slider1" default-binding="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <majorTickSpacing value="15"/>
+                  <maximum value="180"/>
+                  <maximumSize width="-1" height="55"/>
+                  <minimumSize width="-1" height="55"/>
+                  <minorTickSpacing value="0"/>
+                  <orientation value="0"/>
+                  <paintLabels value="true"/>
+                  <paintTicks value="true"/>
+                  <paintTrack value="true"/>
+                  <preferredSize width="-1" height="55"/>
+                  <snapToTicks value="false"/>
+                  <valueIsAdjusting value="false"/>
+                </properties>
+                <clientProperties>
+                  <JSlider.isFilled class="java.lang.Boolean" value="false"/>
+                </clientProperties>
+              </component>
+              <grid id="5e802" binding="rangoDeAngulosContainerPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <minimumSize width="-1" height="55"/>
+                  <preferredSize width="-1" height="55"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="3e2f6" class="javax.swing.JLabel" binding="anguloInicialLabel">
+                    <constraints/>
+                    <properties>
+                      <font name="Consolas" size="11" style="2"/>
+                      <text value="Angulo Inicial:"/>
+                    </properties>
+                  </component>
+                  <component id="eda5d" class="javax.swing.JTextField" binding="anguloInicialTextField">
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="2147483647" height="40"/>
+                      <minimumSize width="-1" height="40"/>
+                      <preferredSize width="80" height="40"/>
+                    </properties>
+                  </component>
+                  <component id="2d5ec" class="javax.swing.JSeparator">
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="10" height="45"/>
+                      <minimumSize width="10" height="45"/>
+                      <orientation value="1"/>
+                      <preferredSize width="10" height="45"/>
+                    </properties>
+                  </component>
+                  <component id="70575" class="javax.swing.JLabel" binding="anguloFinalLabel">
+                    <constraints/>
+                    <properties>
+                      <font name="Consolas" size="11" style="2"/>
+                      <text value="Angulo Final:"/>
+                    </properties>
+                  </component>
+                  <component id="e688b" class="javax.swing.JTextField" binding="anguloFinalTextField">
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="2147483647" height="40"/>
+                      <minimumSize width="-1" height="40"/>
+                      <preferredSize width="80" height="40"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="fd723" class="javax.swing.JLabel" binding="distanciaEspecificaLabel">
+                <constraints>
+                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <font name="Consolas" size="18" style="1"/>
+                  <text value="Por Distancia Especifica"/>
+                </properties>
+              </component>
+              <grid id="b1798" binding="distanciaEspecificaContainerPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <maximumSize width="2147483647" height="55"/>
+                  <minimumSize width="-1" height="55"/>
+                  <preferredSize width="-1" height="55"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="d7408" class="javax.swing.JTextField" binding="distanciaEspecificaTextField">
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="120" height="40"/>
+                      <minimumSize width="120" height="40"/>
+                      <preferredSize width="120" height="40"/>
+                    </properties>
+                  </component>
+                  <component id="7a945" class="javax.swing.JLabel" binding="cmLabel">
+                    <constraints/>
+                    <properties>
+                      <font name="Consolas" size="14" style="2"/>
+                      <maximumSize width="18" height="17"/>
+                      <minimumSize width="18" height="17"/>
+                      <preferredSize width="18" height="17"/>
+                      <text value="cm"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="fca10" binding="modosContainerPanel" layout-manager="FormLayout">
+                <rowspec value="center:d:noGrow"/>
+                <rowspec value="top:5pt:noGrow"/>
+                <rowspec value="center:d:noGrow"/>
+                <rowspec value="top:5pt:noGrow"/>
+                <rowspec value="center:d:noGrow"/>
+                <colspec value="fill:d:grow"/>
+                <constraints>
+                  <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <maximumSize width="-1" height="90"/>
+                  <minimumSize width="-1" height="90"/>
+                  <preferredSize width="-1" height="90"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="f3c88" class="javax.swing.JRadioButton" binding="distanciaEspecificaRadioButton">
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <forms defaultalign-horz="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Consolas" size="14" style="2"/>
+                      <label value="Por Distancia Especifica"/>
+                      <maximumSize width="-1" height="25"/>
+                      <minimumSize width="250" height="25"/>
+                      <preferredSize width="250" height="25"/>
+                      <text value="Por Distancia Especifica"/>
+                    </properties>
+                  </component>
+                  <component id="b4a2f" class="javax.swing.JRadioButton" binding="rangoAngulosRadioButton">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <forms defaultalign-horz="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Consolas" size="14" style="2"/>
+                      <label value="Por Rango de Angulos"/>
+                      <maximumSize width="-1" height="25"/>
+                      <minimumSize width="250" height="25"/>
+                      <preferredSize width="250" height="25"/>
+                      <text value="Por Rango de Angulos"/>
+                      <verticalAlignment value="3"/>
+                    </properties>
+                  </component>
+                  <component id="6d1fe" class="javax.swing.JRadioButton" binding="anguloEspecificoRadioButton">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <forms defaultalign-horz="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Consolas" size="14" style="2"/>
+                      <label value="Por Angulo Especifico"/>
+                      <maximumSize width="-1" height="25"/>
+                      <minimumSize width="250" height="25"/>
+                      <preferredSize width="250" height="25"/>
+                      <text value="Por Angulo Especifico"/>
+                      <verticalAlignment value="3"/>
+                      <verticalTextPosition value="0"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="7f02f" class="javax.swing.JLabel" binding="resultadoTitleLabel">
+                <constraints>
+                  <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <font name="Consolas" size="14" style="2"/>
+                  <maximumSize width="88" height="20"/>
+                  <minimumSize width="88" height="20"/>
+                  <preferredSize width="88" height="20"/>
+                  <text value="Resultado: "/>
+                  <verticalAlignment value="1"/>
+                  <verticalTextPosition value="0"/>
+                </properties>
+              </component>
+              <component id="e7b69" class="javax.swing.JLabel" binding="resultadoContentLabel">
+                <constraints>
+                  <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <font name="Consolas" size="14" style="2"/>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <maximumSize width="1000" height="0"/>
+                  <minimumSize width="-1" height="75"/>
+                  <preferredSize width="350" height="75"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </splitpane>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="buttonGroup1">
+      <member id="f3c88"/>
+      <member id="f3c88"/>
+      <member id="b4a2f"/>
+      <member id="6d1fe"/>
+    </group>
+  </buttonGroups>
+</form>
