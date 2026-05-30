@@ -12,6 +12,7 @@ void config_TMR0(void);
  */
 void config_TMR1(void);
 
+void config_systick(void);
 /**
  *
  */
