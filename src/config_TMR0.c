@@ -6,7 +6,7 @@
 
 //la configuracion del Timer0 esta destinada para el pwm del servomotor.
 
-void conf_timer0()
+void config_TMR0(void)
 {
 	//timer aumenta cada 1 us
 	TIM_TIMERCFG_T timerCfg = {TIM_US,1};

@@ -1,7 +1,7 @@
 #include "LPC17xx.h"
 #include "servomotor.h"
 
-static volatile RadarMode_T radar_mode;
+
 static ServoRadar_t mi_radar = {
     .current_pulse = 1000, //angle = 0
     .step          = 5, // equivalente a un grado
@@ -10,26 +10,8 @@ static ServoRadar_t mi_radar = {
     .direction     = SWEEP_FORWARD //inicia con sentido horario
 };
 
-void RADAR_setMode(RadarMode_T newMode)
-{
-	radar_mode = newMode;
-}
 
-
-/*void RADAR_proccess(){
-	switch (radar_mode)
-	{
-	case RADAR_MODE_SWEEP:
-		RADAR_step();
-		break;
-	case RADAR_MODE_FIXED_ANGLE:
-		break;
-	case RADAR_MODE_TRACKING:
-		break;
-	}
-}
-*/
-void RADAR_step()
+void SERVO_step()
 {
 	// aumenta o disminuye un step
 	if (mi_radar.direction == SWEEP_FORWARD)
@@ -55,7 +37,7 @@ void RADAR_step()
 	LPC_TIM0->MR0 = mi_radar.current_pulse;
 }
 
-bool RADAR_setAngle(uint32_t angle)
+bool SERVO_setAngle(uint32_t angle)
 {
 	if (angle > 180)
 	{
@@ -64,6 +46,14 @@ bool RADAR_setAngle(uint32_t angle)
 	mi_radar.current_pulse = 1000 + ((angle * 1000)/180);
 	LPC_TIM0->MR0 = mi_radar.current_pulse; //mapeo matematico que cambia el ciclo de trabajo del pwm segun el angulo
 	return true;
+}
+
+double SERVO_getAngle(void)
+{
+	// operacion inversa
+    // pulse = 1000 + (angle * 1000) / 180  -->  angle = (pulse - 1000) * 180 / 1000
+    double angle = ((double)(mi_radar.current_pulse - 1000) * 180.0) / 1000.0;
+    return angle;
 }
 
 

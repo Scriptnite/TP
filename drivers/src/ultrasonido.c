@@ -1,8 +1,15 @@
 #include "LPC17xx.h"
 #include "LPC17xx_gpio.h"
 #include "LPC17xx_systick.h"
+#include "ultrasonido.h"
+#include "config_global.h"
+#include <stdbool.h>
 
-void sendTriggerPulse()
+
+static volatile uint32_t time_echo = 0; //tiempo de duracion del pulso en el pin echo
+static volatile bool data_ready = false;//indica que si el pulso de echo finalizo. si data_ready = true, se calcula la distancia. data_ready = false, espera al flanco de bajada.
+
+void ULTRASONIDO_sendTriggerPulse(void)
 {
 	// Se configurar el tiempo de recarga (Por si se borró o modificó)
 	SysTick->LOAD = ((SystemCoreClock / 1000000) * 10) - 1;
@@ -12,4 +19,26 @@ void sendTriggerPulse()
 	GPIO_SetPins(TRIG_PORT, 1<<TRIG_PIN);
 	//Se enciende el Systick
 	SYSTICK_Cmd(ENABLE);
+}
+
+
+double ULTRASONIDO_getDistance(void)
+{
+	data_ready = false;
+	return ((double)time_echo / 58.2);
+}
+
+bool ULTRASONIDO_isDataReady(void)
+{
+    return data_ready;
+}
+
+void ULTRASONIDO_setDataisReady(bool ready)
+{
+	data_ready = ready;
+}
+
+void ULTRASONIDO_setEchoTime(uint32_t time)
+{
+	time_echo = time;
 }
