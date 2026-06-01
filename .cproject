@@ -118,16 +118,6 @@
 							<inputType id="com.crt.advproject.compiler.input.683044579" superClass="com.crt.advproject.compiler.input"/>
 						</tool>
 					</fileInfo>
-					<folderInfo id="com.crt.advproject.config.exe.debug.1773491433.2063559803" name="/" resourcePath="drivers">
-						<toolChain id="com.crt.advproject.toolchain.exe.debug.1852139501" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.debug" unusedChildren="">
-							<tool id="com.crt.advproject.cpp.exe.debug.1283295407" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.exe.debug.377196856"/>
-							<tool id="com.crt.advproject.gcc.exe.debug.442447498" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug.1234477861"/>
-							<tool id="com.crt.advproject.gas.exe.debug.586898078" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.debug.1769510437"/>
-							<tool id="com.crt.advproject.link.cpp.exe.debug.1281104859" name="MCU C++ Linker" superClass="com.crt.advproject.link.cpp.exe.debug.1247657373"/>
-							<tool id="com.crt.advproject.link.exe.debug.1449431318" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug.905719159"/>
-							<tool id="com.crt.advproject.tool.debug.debug.1048737043" name="MCU Debugger" superClass="com.crt.advproject.tool.debug.debug.1218934268"/>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
