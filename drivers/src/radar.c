@@ -26,13 +26,18 @@ void RADAR_setMode(RadarMode_T newMode)
 void RADAR_procces(){
 	switch (modo_actual)
 	{
+	//Modo barrido: el servo se mueve un grado, el trigger recibe una señal de 10us, una vez que el pin echo haya capturado la señal y calculado la
+	//distancia, actualiza los datos de telemetria y envia los datos por uart.
 	case RADAR_MODE_SWEEP:
 		SERVO_step();
 		ULTRASONIDO_sendTriggerPulse();
+		//Espera a que haya un nuevo dato de distancia disponible
 		while (!ULTRASONIDO_isDataReady());
+		//Actualiza los datos de telemetria (distancia y angulo)
 		TELEMETRIA_actualizar(ULTRASONIDO_getDistance(), SERVO_getAngle());
 		//en esta linea iria la funcion que envia los datos por dma. Los datos se encuentra en la instancia del struct Telemetria_T llamado paquete_radar
 		break;
+
 	case RADAR_MODE_FIXED_ANGLE:
 		//SERVO_setAngle(/* OJO ACAAAAAAA*/);
 		ULTRASONIDO_sendTriggerPulse();

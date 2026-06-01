@@ -27,9 +27,9 @@ void ULTRASONIDO_sendTriggerPulse(void);
 double ULTRASONIDO_getDistance(void);
 
 /**
- * @brief  indica si ya hay un nuevo tiempo del pin echo para calcular la distancia
+ * @brief  Indica si se ha calculado una nueva distancia del sensor de ultrasonido
  * @param  Ninguno.
- * @return true si hay una nueva distancia para calcular. False si no la hay
+ * @return true si el ultrasonido obtuvo una nueva distancia. False si no hay una nueva distancia calculada
  */
 bool ULTRASONIDO_isDataReady(void);
 
@@ -42,10 +42,10 @@ bool ULTRASONIDO_isDataReady(void);
 void ULTRASONIDO_setDataisReady(bool ready);
 
 /**
- * @brief  Cambia el tiempo del pulso en el pin echo.
- * @param  Ninguno.
+ * @brief  Calcula la distancia medida por el sensor de ultrasonido.
+ * @param  time: Tiempo del pulso en el pin Echo.
  * @return Ninguno.
  */
-void ULTRASONIDO_setEchoTime(uint32_t time);
+void ULTRASONIDO_calculateDistance(uint32_t time);
 
 #endif /*ULTRASONIDO_H_ */

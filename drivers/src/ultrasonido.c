@@ -5,9 +5,8 @@
 #include "config_global.h"
 #include <stdbool.h>
 
-
-static volatile uint32_t time_echo = 0; //tiempo de duracion del pulso en el pin echo
-static volatile bool data_ready = false;//indica que si el pulso de echo finalizo. si data_ready = true, se calcula la distancia. data_ready = false, espera al flanco de bajada.
+static volatile double distance;//distancia medida por el sensor de ultraSonido
+static volatile bool data_ready = false;//indica que si hay una nueva medida de distancia por el sensor de ultrasonido
 
 void ULTRASONIDO_sendTriggerPulse(void)
 {
@@ -24,8 +23,7 @@ void ULTRASONIDO_sendTriggerPulse(void)
 
 double ULTRASONIDO_getDistance(void)
 {
-	data_ready = false;
-	return ((double)time_echo / 58.2);
+	return distance;
 }
 
 bool ULTRASONIDO_isDataReady(void)
@@ -38,7 +36,7 @@ void ULTRASONIDO_setDataisReady(bool ready)
 	data_ready = ready;
 }
 
-void ULTRASONIDO_setEchoTime(uint32_t time)
+void ULTRASONIDO_calculateDistance(uint32_t time)
 {
-	time_echo = time;
+	distance = (double)time / 58.2;
 }

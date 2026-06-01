@@ -2,6 +2,7 @@
 #include "LPC17xx.h"
 #include "LPC17xx_timer.h"
 #include "LPC17xx_gpio.h"
+#include "LPC17xx_pinsel.h"
 #include "ultrasonido.h"
 #include <stdio.h>
 #include <stdbool.h>
@@ -15,6 +16,16 @@ donde seran procesados.
 */
 void config_TMR1(void)
 {
+	//Configuro el pin del capture1[1]
+		PINSEL_CFG_T pinCfg = {
+				.port = PORT_1,
+				.pin = PIN_19,
+				.func = PINSEL_FUNC_11 ,
+				.mode = PINSEL_PULLDOWN,
+				.openDrain = DISABLE
+		};
+		PINSEL_ConfigPin(&pinCfg);
+
 	TIM_TIMERCFG_T timerCfg = {TIM_US, 1}; //el timer aumenta cada 1us
     TIM_InitTimer(LPC_TIM1, &timerCfg);
 
@@ -22,7 +33,7 @@ void config_TMR1(void)
 
     TIM_CAPTURECFG_T capCfg = {
     		.channel = TIM_CAPTURE_1,
-			.fallingEn = ENABLE,
+    		.fallingEn = ENABLE,
 			.risingEn = ENABLE,
 			.intEn = ENABLE
     };
@@ -43,7 +54,7 @@ void TIMER1_IRQHandler()
 	}
 	else
 	{
-		ULTRASONIDO_setEchoTime(TIM_GetCaptureValue(LPC_TIM1, TIM_CAPTURE_1) - risingEdgeValue);
+		ULTRASONIDO_calculateDistance(TIM_GetCaptureValue(LPC_TIM1, TIM_CAPTURE_1) - risingEdgeValue);
 		ULTRASONIDO_setDataisReady(true);
 	}
 	TIM_ClearIntPending(LPC_TIM1, TIM_CR1_INT);

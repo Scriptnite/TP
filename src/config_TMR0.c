@@ -2,12 +2,23 @@
 #include "LPC17xx.h"
 #include "LPC17xx_timer.h"
 #include "LPC17xx_gpio.h"
+#include "LPC17xx_pinsel.h"
 #include "servomotor.h"
 
 //la configuracion del Timer0 esta destinada para el pwm del servomotor.
 
 void config_TMR0(void)
 {
+	//Configuro el pin del match0[0]
+	PINSEL_CFG_T pinCfg = {
+			.port = PORT_1,
+			.pin = PIN_28,
+			.func = PINSEL_FUNC_11 ,
+			.mode = PINSEL_TRISTATE,
+			.openDrain = DISABLE
+	};
+	PINSEL_ConfigPin(&pinCfg);
+
 	//timer aumenta cada 1 us
 	TIM_TIMERCFG_T timerCfg = {TIM_US,1};
 	TIM_InitTimer(LPC_TIM0, &timerCfg);
