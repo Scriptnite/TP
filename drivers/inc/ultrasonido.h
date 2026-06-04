@@ -7,8 +7,8 @@
 /**
  * @brief pines que utiliza el sensor ultrasonico
  */
-#define TRIG_PORT 1
-#define TRIG_PIN 20
+//#define TRIG_PORT 1
+//#define TRIG_PIN 20
 
 /**
  * @brief  envia un pulso al pin trigger del sensor ultrasonico

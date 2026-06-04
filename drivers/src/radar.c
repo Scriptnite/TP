@@ -13,7 +13,7 @@ void RADAR_init(void)
     // Inicialización de los perifericos a utilizar
 	config_TMR0();
     config_TMR1();
-    config_systick();
+    //config_systick();
     // El radar arranca en modo barrido
     modo_actual = RADAR_MODE_SWEEP;
 }
