@@ -141,12 +141,10 @@ void EINT3_IRQHandler() {
         valorCargando[0] = '\0';
         GLOBAL_orden_actual = EN_ESPERA; // Reseteamos la orden
 
-        if (GLOBAL_modo_actual == RANGO_DE_ANGULOS) {
-            GLOBAL_estado_actual = ESPERANDO_PRIMER_DATO;
-        }
-        else {
-            GLOBAL_estado_actual = ESPERANDO_UNICO_DATO;
-        }
+        GLOBAL_estado_actual =
+            (GLOBAL_modo_actual == RANGO_DE_ANGULOS)
+                ? ESPERANDO_PRIMER_DATO
+                : ESPERANDO_UNICO_DATO;
 
         cambio_Modo();
     }
@@ -162,6 +160,9 @@ void EINT3_IRQHandler() {
 void cambio_Modo() {
     if (TECLADO_CONTADOR_INTERRUPCIONES_DEBOUNCE >= 10) {
         printf("Modo cambiado a: %c\n", GLOBAL_modo_actual);
+
+        // TODO Disparador de cambio de modo
+
         TECLADO_CONTADOR_INTERRUPCIONES_DEBOUNCE = 0;
     }
 }
@@ -194,7 +195,7 @@ void evaluar(char val) {
                         if (GLOBAL_estado_actual == ESPERANDO_PRIMER_DATO) {
                             GLOBAL_angulo0 = (uint8_t)temporal;
                             printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo0 guardado: %d\n", GLOBAL_angulo0);
-                            GLOBAL_estado_actual = ESPERANDO_SEGUNDO_DATO; // Pasamos al siguiente
+                            GLOBAL_estado_actual = ESPERANDO_SEGUNDO_DATO;
 
                             sprintf(buffer, "CONFIRMAR | RANGO_DE_ANGULOS | Angulo0 guardado: %u\r\n", GLOBAL_angulo0);
                             UART0_SendString(buffer);
@@ -202,7 +203,7 @@ void evaluar(char val) {
                         else if (GLOBAL_estado_actual == ESPERANDO_SEGUNDO_DATO) {
                             GLOBAL_angulo1 = (uint8_t)temporal;
                             printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo1 guardado: %d\n", GLOBAL_angulo1);
-                            GLOBAL_estado_actual = ESPERANDO_PRIMER_DATO; // Cicla o finaliza según tu app
+                            GLOBAL_estado_actual = ESPERANDO_PRIMER_DATO;
 
                             sprintf(buffer, "CONFIRMAR | RANGO_DE_ANGULOS | Angulo1 guardado: %u\r\n", GLOBAL_angulo1);
                             UART0_SendString(buffer);

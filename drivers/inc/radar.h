@@ -17,8 +17,6 @@ typedef enum {
 
 /**
  * @brief  Inicializa y configura el radar en modo sweep.
- * @param  ninguno
- * @return Ninguno.
  * @note   La misma funcion configura Timer0, Timer 1 y systick.
  */
 void RADAR_init(void);

@@ -8,6 +8,7 @@ int main() {
     iniciarTeclado(TECLADO_MS_BARRIDO);
     config_UART0(9600);
 
+
     while (1);
 }
 
