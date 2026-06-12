@@ -5,7 +5,7 @@ Este diagrama de bloques ilustra la arquitectura de hardware de nuestro proyecto
 ## Diagrama de Bloques
 
 
-<img width="6029" height="4859" alt="Image" src="https://github.com/user-attachments/assets/e4fe383f-0926-4e2d-bc23-7f860ab6952c" />
+<img width="7805" height="3012" alt="Image" src="https://github.com/user-attachments/assets/b06eab5f-0a58-4073-b285-1023772a5aa5" />
 
 
 ## Notas Rápidas de Funcionamiento
