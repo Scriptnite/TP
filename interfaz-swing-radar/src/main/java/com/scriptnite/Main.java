@@ -16,7 +16,7 @@ public class Main {
 				new Dimension(1200, 750)
 		);
 
-		/*
+/*
 		new Thread(() -> {
 			int angulo = 0;
 			boolean subiendo = true;

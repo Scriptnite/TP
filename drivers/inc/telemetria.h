@@ -1,25 +1,16 @@
 #ifndef TELEMETRIA_H_
 #define TELEMETRIA_H_
 
-#include <stdint.h>
-
-#define BUFFER_SIZE 32
+/**
+ * @brief Envía el estado actual de las variables globales a UART, I2C y display
+ */
+void TELEMETRIA_Actualizar(void);
 
 /**
- * @brief  Estructura de los datos telemetricos del radar
- * @details Estos datos se guardan en arrays de 16bytes, con el objetivo de ser enviados mediante comunicacion uart
+ * @brief Procesa una línea recibida por UART (desde ISR RX)
+ * @param data Cadena con formato "modo,distancia,angulo0,angulo1" (Ej. "A,150,30,0")
+ * @details Parsea la cadena y actualiza las variables globales GLOBAL_xxxx
  */
-typedef struct {
-    char distancia[16]; // "D:XXX.XX "
-    char angulo[16];    // "A:YYY.YY\r\n"
-} Telemetria_T;
-
-/**
- * @brief  Actualiza los datos de telemetria
- * @param  distancia: double que indica la distancia en cm.
- *		   angulo: double que indica el angulo del servomotor.
- * @return Ninguno.
- */
-void TELEMETRIA_actualizar(double distancia, double angulo);
+void TELEMETRIA_procesarRecibido(const char* data);
 
 #endif

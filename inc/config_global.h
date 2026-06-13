@@ -2,17 +2,16 @@
 #define TP_CONFIG_GLOBAL_H
 
 #include "config.h"
-
+#include "radar.h"
 #include "teclado.h"
-
-#include "adc.h"
-#include "dac.h"
 #include "dma.h"
-#include "gpio.h"
-#include "i2c.h"
-#include "systick.h"
-#include "timer0.h"
-#include "timer1.h"
 #include "uart0.h"
+#include "servo.h"
+#include "radar.h"
+#include "lcd.h"
+#include "../Drivers/inc/manejo_de_bits.h"
+#include "../Drivers/inc/servo.h"
+#include "../Drivers/inc/telemetria.h"
+#include "LPC17xx.h"
 
 #endif

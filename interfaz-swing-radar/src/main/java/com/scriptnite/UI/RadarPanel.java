@@ -9,7 +9,7 @@ import java.util.Map;
 public class RadarPanel extends JPanel {
     private static final Color colorLineasGuias = new Color(0, 100, 0);
     private static final int diametroCirculoPixels = 10;
-    private final int MAX_DISTANCIA_CM = 200; // Rango máximo del HC-SR04
+    private final int MAX_DISTANCIA_CM = 220; // Rango máximo del HC-SR04
     private final Map<Integer, Integer> mapaObstaculos = new HashMap<>(); // <Angulo, distancia>
     private int anguloActual = 0;
 

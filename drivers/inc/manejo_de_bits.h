@@ -3,6 +3,7 @@
 
 #include "LPC17xx.h"
 
+
 /**
  * @brief Compacta los bits seleccionados por una máscara.
  *

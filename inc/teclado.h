@@ -2,7 +2,7 @@
 #define TP_TECLADO_H
 
 #include "lpc17xx_common.h"
-#include "systick.h"
+
 
 /**
  * @file teclado.h
@@ -65,5 +65,18 @@ void config_GPIO(LPC_PORT puerto, uint32_t pinMask_INPUT);
  * Todas las interrupciones son configuradas por flanco de subida.
  */
 void config_EINT();
+
+/**
+ * Este Periferico es utilizado para generar el barrido en las filas del teclado matricial para mapeo
+ *
+ * El Handler del SysTick será el encargado de hacer el desplazamiento del "uno" en el nibble
+ */
+
+/**
+ * @brief Configura el SysTick para generar interrupciones periódicas.
+ * @note Habilita la interrupción del SysTick y la correspondiente entrada en el NVIC.
+ * @param miliSeconds Tiempo en milisegundos.
+ */
+void config_SysTickMs(uint32_t miliSeconds);
 
 #endif

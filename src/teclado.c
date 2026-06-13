@@ -1,22 +1,22 @@
 #include "lpc17xx_gpio.h"
 #include "lpc17xx_pinsel.h"
 #include "lpc17xx_exti.h"
-#include "systick.h"
 #include "teclado.h"
 #include "config.h"
 #include <stdio.h>
-
+#include "lpc17xx_systick.h"
 #include "uart0.h"
 #include "../drivers/inc/manejo_de_bits.h"
 
-#define filaReal ((uint8_t)((TECLADO_FILA_ACTUAL == 0) ? 3 : (TECLADO_FILA_ACTUAL - 1)))
+#define filaReal ((uint8_t)((filaActual == 0) ? 3 : (filaActual - 1)))
 
 static void evaluar(char val);
 static void cambio_Modo(void);
 
-char buffer[80]; // Un array lo suficientemente grande para toda la línea
 volatile char valorCargando[3] = {};
 static uint8_t buffer_idx = 0;
+volatile uint8_t filaActual = 0;
+volatile uint8_t contador_interrupciones = 0;
 
 void iniciarTeclado(uint32_t miliSeconds) {
     config_GPIO(TECLADO_PORT, TECLADO_FILAS_MASK);
@@ -149,7 +149,6 @@ void EINT3_IRQHandler() {
         cambio_Modo();
     }
 
-    // Salir
     EXTI_ClearFlag(EXTI_EINT3);
     NVIC_ClearPendingIRQ(EINT3_IRQn);
 }
@@ -158,28 +157,29 @@ void EINT3_IRQHandler() {
  * Esta funcion se ejecuta a la hora de cambiar de modo
  */
 void cambio_Modo() {
-    if (TECLADO_CONTADOR_INTERRUPCIONES_DEBOUNCE >= 10) {
+    if (contador_interrupciones >= 10) {
         printf("Modo cambiado a: %c\n", GLOBAL_modo_actual);
 
         // TODO Disparador de cambio de modo
 
-        TECLADO_CONTADOR_INTERRUPCIONES_DEBOUNCE = 0;
+        contador_interrupciones = 0;
     }
 }
 
 void evaluar(char val) {
-    if (TECLADO_CONTADOR_INTERRUPCIONES_DEBOUNCE >= 10) {
-        // 1. Si el carácter es un número, lo acumulamos en el buffer
+    if (contador_interrupciones >= TECLADO_CONTADOR_DELAY) {
+        //UART_enviar("Boton: %c\r\n", val);
+
+
+        // Si el carácter es un número, lo acumulamos en el buffer
         if (val >= '0' && val <= '9') {
-            if (buffer_idx < 3) {
-                // Evita desbordar las 3 posiciones de valorCargando
-                valorCargando[buffer_idx++] = val;
-            }
-            TECLADO_CONTADOR_INTERRUPCIONES_DEBOUNCE = 0;
+            if (buffer_idx < 3) valorCargando[buffer_idx++] = val;
+
+            contador_interrupciones = 0;
             return; // Salimos de la función, ya que solo estamos cargando dígitos
         }
 
-        // 2. Si no fue un número, procesamos las órdenes (* o #) según el modo
+        // Si no fue un número, procesamos las órdenes (* o #) según el modo
         switch (GLOBAL_modo_actual) {
             case RANGO_DE_ANGULOS: {
                 // === MODO 'A' ===
@@ -197,16 +197,18 @@ void evaluar(char val) {
                             printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo0 guardado: %d\n", GLOBAL_angulo0);
                             GLOBAL_estado_actual = ESPERANDO_SEGUNDO_DATO;
 
-                            sprintf(buffer, "CONFIRMAR | RANGO_DE_ANGULOS | Angulo0 guardado: %u\r\n", GLOBAL_angulo0);
-                            UART0_SendString(buffer);
+                            //sprintf(buffer, "CONFIRMAR | RANGO_DE_ANGULOS | Angulo0 guardado: %u\r\n", GLOBAL_angulo0);
+                            //UART0_SendString(buffer);
                         }
                         else if (GLOBAL_estado_actual == ESPERANDO_SEGUNDO_DATO) {
                             GLOBAL_angulo1 = (uint8_t)temporal;
                             printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo1 guardado: %d\n", GLOBAL_angulo1);
                             GLOBAL_estado_actual = ESPERANDO_PRIMER_DATO;
 
-                            sprintf(buffer, "CONFIRMAR | RANGO_DE_ANGULOS | Angulo1 guardado: %u\r\n", GLOBAL_angulo1);
-                            UART0_SendString(buffer);
+                            //sprintf(buffer, "CONFIRMAR | RANGO_DE_ANGULOS | Angulo1 guardado: %u\r\n", GLOBAL_angulo1);
+                            //UART0_SendString(buffer);
+
+                            GLOBAL_estado_sistema = SISTEMA_INICIANDO_MODO; // Trigger
                         }
 
                         buffer_idx = 0; // Limpia el buffer para la próxima carga
@@ -216,6 +218,7 @@ void evaluar(char val) {
                     case CANCELAR: {
                         // Se presionó '#'
                         buffer_idx = 0; // Limpia el buffer del dato actual
+                        GLOBAL_estado_sistema = SISTEMA_CONFIGURANDO;
                         GLOBAL_orden_actual = EN_ESPERA;
                         printf("CANCELAR | RANGO_DE_ANGULOS | Buffer de rango limpiado.\n");
                         break;
@@ -236,9 +239,10 @@ void evaluar(char val) {
                         GLOBAL_angulo0 = (uint8_t)temporal;
                         printf("CONFIRMAR | ANGULO ESPECÍFICO | Angulo especifico guardado: %d\n", GLOBAL_angulo0);
 
-                        sprintf(buffer, "CONFIRMAR | ANGULO ESPECÍFICO | Angulo especifico guardado: %u\r\n",
-                                GLOBAL_angulo0);
-                        UART0_SendString(buffer);
+                        //sprintf(buffer, "CONFIRMAR | ANGULO ESPECÍFICO | Angulo especifico guardado: %u\r\n",GLOBAL_angulo0);
+                        //UART0_SendString(buffer);
+
+                        GLOBAL_estado_sistema = SISTEMA_INICIANDO_MODO; // Trigger
 
                         buffer_idx = 0;
                         GLOBAL_orden_actual = EN_ESPERA;
@@ -266,9 +270,10 @@ void evaluar(char val) {
                         GLOBAL_distancia = (uint8_t)temporal;
                         printf("CONFIRMAR | DISTANCIA ESPECÍFICA | Distancia guardada: %d\n", GLOBAL_distancia);
 
-                        sprintf(buffer, "CONFIRMAR | DISTANCIA ESPECÍFICA | Distancia guardada: %u\r\n",
-                                GLOBAL_distancia);
-                        UART0_SendString(buffer);
+                        //sprintf(buffer, "CONFIRMAR | DISTANCIA ESPECÍFICA | Distancia guardada: %u\r\n", GLOBAL_distancia);
+                        //UART0_SendString(buffer);
+
+                        GLOBAL_estado_sistema = SISTEMA_INICIANDO_MODO; // TRIGGER
 
                         buffer_idx = 0;
                         GLOBAL_orden_actual = EN_ESPERA;
@@ -286,6 +291,34 @@ void evaluar(char val) {
             }
         }
 
-        TECLADO_CONTADOR_INTERRUPCIONES_DEBOUNCE = 0;
+        contador_interrupciones = 0;
     }
+}
+
+void config_SysTickMs(uint32_t miliSeconds) {
+    SYSTICK_InternalInit(miliSeconds);
+    SYSTICK_Cmd(ENABLE);
+    SYSTICK_IntCmd(ENABLE);
+}
+
+/**
+ * @brief Realiza el barrido de @ref TECLADO_FILAS_MASK.
+ *
+ * @note Leer el puerto valor del puerto según la mascara y desplazarlo
+ */
+void SysTick_Handler() {
+    const uint32_t valorActual = GPIO_ReadValue(TECLADO_PORT);
+
+    const uint32_t nuevoValor =
+        desplazarMascaraCircular(
+            valorActual,
+            TECLADO_FILAS_MASK
+        );
+
+    filaActual = (filaActual + 1) % 4;
+    contador_interrupciones++;
+
+    GPIO_WriteValue(TECLADO_PORT, nuevoValor);
+
+    SYSTICK_ClearCounterFlag();
 }
