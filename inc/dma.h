@@ -16,6 +16,11 @@
  */
 void config_DMA_CH0();
 
+void get_velocidad(void);
+void get_servoStep(void);
+
+
+
 /**
  * @brief Channel 1 = Memoria (TMRx) -> GPIO
  * * toma el Dato de la direccion de memoria y lo lleva al GPIO

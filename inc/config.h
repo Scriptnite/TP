@@ -94,7 +94,16 @@ extern const char teclado[4][4];
 #define SERVO_MAX_PULSE_uS          2000    // 2 ms
 #define SERVO_MASK_PIN              (0 | (1 << SERVO_SIGNAL_PIN))
 #define SERVO_CICLOS_ESTABILIZACION_PASO   2  // 2 ciclos PWM para estabilizar
+#define SERVO_MAX_ANGULO_STEP 20 // 20 grados
 /* ################################################ */
+
+
+/* ################################################ */
+/* Trimmer */
+#define TRIMMER_MAX_TIEMPO_PROCESAMIENTO 1000 //1000ms = 1s
+extern volatile uint32_t GLOBAL_trimmer[2]; //GLOBAL_trimmer[tiempo_de_procesamiento, set_paso_servo]
+/* ################################################ */
+
 
 /* ################################################ */
 /* Buzzer */
