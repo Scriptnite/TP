@@ -36,26 +36,3 @@ uint32_t SERVO_getPulsoDesdeAngulo(uint16_t anguloMinimo, uint16_t anguloMaximo,
 
     return anchoPulsoMinimo + ((deltaAngulo * rangoPulso) / rangoAngulo);
 }
-
-
-uint32_t SERVO_CalcularPaso(uint32_t pclk_hz,
-                            uint32_t pr_val,
-                            uint32_t pulse_min_us,
-                            uint32_t pulse_max_us,
-                            uint16_t rango_grados,
-                            uint16_t grados_por_paso) {
-    // 1. Calculamos el delta de tiempo total del pulso en microsegundos
-    const uint32_t delta_pulso_us = pulse_max_us - pulse_min_us;
-
-    // 2. Calculamos el divisor real del clock (PR + 1)
-    const uint32_t divisor_timer = pr_val + 1;
-
-    // 3. Aplicamos la fórmula balanceando multiplicaciones primero para no perder resolución.
-    // Numerador: Grados_paso * Delta_us * PCLK
-    // Denominador: Rango_grados * Divisor * 1.000.000
-    const uint64_t numerador = (uint64_t)grados_por_paso * delta_pulso_us * pclk_hz;
-    const uint64_t denominador = (uint64_t)rango_grados * divisor_timer * 1000000;
-
-    // Retornamos el paso en Ticks de Timer
-    return (uint32_t)(numerador / denominador);
-}

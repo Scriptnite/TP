@@ -10,6 +10,13 @@ typedef enum {
     ST_RADAR_AVANZAR_PASO
 } EstadoRadar_t;
 
+/**
+ * @brief Comienza una nueva medición únicamente si:
+ *        1. El servo está estabilizado (posición final alcanzada)
+ *        2. No hay medición en progreso
+ * @details Esta función es NO-BLOQUEANTE. El bucle while(1) continúa girando
+ *          y solo cuando se cumplen las condiciones se dispara el trigger.
+ */
 void ComenzarMedicion();
 
 /**

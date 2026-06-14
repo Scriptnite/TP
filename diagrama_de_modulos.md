@@ -4,8 +4,7 @@ Este diagrama de bloques ilustra la arquitectura de hardware de nuestro proyecto
 
 ## Diagrama de Bloques
 
-
-<img width="7805" height="3012" alt="Image" src="https://github.com/user-attachments/assets/b06eab5f-0a58-4073-b285-1023772a5aa5" />
+<img width="850" height="500" alt="Image" src="https://github.com/user-attachments/assets/b06eab5f-0a58-4073-b285-1023772a5aa5" />
 
 
 ## Notas Rápidas de Funcionamiento
@@ -17,7 +16,9 @@ Este diagrama de bloques ilustra la arquitectura de hardware de nuestro proyecto
 
 * **GPDMA (Matriz de Conectividad):** Automatiza la transferencia de datos en background sin intervención de la CPU. Mueve los bloques de memoria asignados a la telemetría directamente hacia los buffers de los periféricos de salida (UART y DAC).
 
-* **TIMER:** Saca la señal PWM a 50 Hz para posicionar el servomotor, genera el pulso de disparo (Trigger) de 10 µs para el sensor ultrasónico y utiliza los registros de captura (*Capture*) por hardware para medir el ancho del pulso de retorno (Echo) del HC-SR04 de manera precisa.
+* **TIMER:** Toma la señal PWM a 50 Hz para posicionar el servomotor, genera el pulso de disparo (Trigger) de 10 µs para
+  el sensor ultrasónico y utiliza los registros de captura (*Capture*) por hardware para medir el ancho del pulso de
+  retorno (ECHO) del HC-SR04 de manera precisa.
 
 * **UART:** Transmite las tramas de datos empaquetadas (Ángulo y Distancia) de forma asíncrona mediante un conversor USB-TTL hacia la PC, permitiendo actualizar la interfaz gráfica (*Dashboard*) a altos frames por segundo (FPS).
 

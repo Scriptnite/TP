@@ -1,4 +1,4 @@
-#include "../Drivers/inc/telemetria.h"
+#include "../inc/telemetria.h"
 #include <stdio.h>
 #include "uart0.h"
 #include "config.h"
@@ -80,11 +80,11 @@ void TELEMETRIA_Actualizar() {
 void TELEMETRIA_procesarRecibido(const char* data) {
     if (data == NULL) return;
 
-    int modo = 0;
-    double dist = 0.0, ang0 = 0.0, ang1 = 0.0;
+    uint32_t modo = 0;
+    uint32_t dist = 0.0, ang0 = 0.0, ang1 = 0.0;
 
     // Parsear: "modo,distancia,angulo0,angulo1"
-    int parsed = sscanf(data, "%d,%lf,%lf,%lf", &modo, &dist, &ang0, &ang1);
+    uint32_t parsed = sscanf(data, "%d,%lf,%lf,%lf", &modo, &dist, &ang0, &ang1);
 
     if (parsed >= 3) {
         // Al menos modo, distancia y angulo0 deben estar presentes

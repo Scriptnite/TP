@@ -93,7 +93,7 @@ void LCD_Init() {
     PINSEL_ConfigPin(&pinCfg);
 
 
-    I2C_Cmd(LPC_I2C0, DISABLE);
+    //I2C_Cmd(LPC_I2C0, DISABLE);
     I2C_Init(LPC_I2C0, 100000);
     I2C_Cmd(LPC_I2C0, ENABLE);
 

@@ -31,22 +31,4 @@ uint16_t SERVO_getAnguloDesdePWM(uint16_t anguloMinimo, uint16_t anguloMaximo, u
 uint32_t SERVO_getPulsoDesdeAngulo(uint16_t anguloMinimo, uint16_t anguloMaximo, uint32_t anchoPulsoMinimo,
                                    uint32_t anchoPulsoMaximo, uint16_t anguloActual);
 
-/**
- * @brief  Calcula dinámicamente el paso del servo en ticks de Timer.
- * @param  pclk_hz          Frecuencia del PCLK del Timer (ej. 25000000 para 25 MHz).
- * @param  pr_val           Valor asignado al registro PR (Prescaler).
- * @param  pulse_min_us     Ancho de pulso mínimo en microsegundos (ej. 1000).
- * @param  pulse_max_us     Ancho de pulso máximo en microsegundos (ej. 2000).
- * @param  rango_grados     Rango total del servo (ej. 180).
- * @param  grados_por_paso  Cuántos grados quieres avanzar en cada movimiento (ej. 2).
- * @return El valor del paso convertido a ticks de Timer listo para sumar/restar a MR0.
- */
-uint32_t SERVO_CalcularPaso(uint32_t pclk_hz,
-                            uint32_t pr_val,
-                            uint32_t pulse_min_us,
-                            uint32_t pulse_max_us,
-                            uint16_t rango_grados,
-                            uint16_t grados_por_paso);
-
-
 #endif //TP_SERVO_H

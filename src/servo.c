@@ -38,14 +38,7 @@ void SERVO_init(void) {
     servo_radar.pulsoActual = SERVO_MIN_PULSE_uS;
     servo_radar.direccion = SENTIDO_HORARIO;
     servo_radar.ciclosEsperaPaso = SERVO_CICLOS_ESTABILIZACION_PASO;
-    servo_radar.paso = SERVO_CalcularPaso(
-        CLKPWR_GetPCLK(CLKPWR_PCLKSEL_TIMER0),
-        TIM_ReadPrescale(LPC_TIM0),
-        SERVO_MIN_PULSE_uS,
-        SERVO_MAX_PULSE_uS,
-        SERVO_MAX_ANGULO - SERVO_MIN_ANGULO,
-        1 // 1 grado por paso
-    );
+    servo_radar.paso = SERVO_PASO;
 
     TIM_TIMERCFG_T configTimer;
     configTimer.prescaleOpt = TIM_US;
@@ -71,16 +64,20 @@ void SERVO_init(void) {
     TIM_ConfigMatch(LPC_TIM0, &matchConfigPeriodo);
 
     NVIC_EnableIRQ(TIMER0_IRQn);
+    NVIC_SetPriority(TIMER0_IRQn, 0);
 
     TIM_Enable(LPC_TIM0);
     /* ################################################ */
 
-    SERVO_estabilizado = TRUE; // Inicialmente asumimos que está quieto
+    SERVO_estabilizado = TRUE;
 }
 
-void SERVO_step(void) {
-    // Si el servo se está moviendo o asentando, salimos inmediatamente sin modificar registros ni alterar las variables.
+void SERVO_step() {
     if (!SERVO_estabilizado) return;
+
+    NVIC_DisableIRQ(TIMER0_IRQn);
+    TIM_ClearIntPending(LPC_TIM0, TIM_MR0_INT);
+    TIM_ClearIntPending(LPC_TIM0, TIM_MR1_INT);
 
     uint32_t proximo_pulso = servo_radar.pulsoActual;
 
@@ -104,6 +101,8 @@ void SERVO_step(void) {
     }
 
     TIM_UpdateMatchValue(LPC_TIM0, TIM_MATCH_0, proximo_pulso);
+    TIM_ResetCounter(LPC_TIM0);
+
     servo_radar.pulsoActual = proximo_pulso;
     GLOBAL_ultimo_angulo = anguloActual;
     GLOBAL_ultima_distancia = 0;
@@ -111,6 +110,8 @@ void SERVO_step(void) {
 
     SERVO_estabilizado = FALSE;
     ciclos_para_estabilizar = servo_radar.ciclosEsperaPaso; // 2 ciclos de 20 ms de espera para asentamiento
+
+    NVIC_EnableIRQ(TIMER0_IRQn);
 }
 
 Status SERVO_setAngulo(uint16_t angle) {

@@ -93,7 +93,8 @@ extern const char teclado[4][4];
 #define SERVO_MIN_PULSE_uS          1000    // 1 ms
 #define SERVO_MAX_PULSE_uS          2000    // 2 ms
 #define SERVO_MASK_PIN              (0 | (1 << SERVO_SIGNAL_PIN))
-#define SERVO_CICLOS_ESTABILIZACION_PASO   2  // 2 ciclos PWM para estabilizar
+#define SERVO_CICLOS_ESTABILIZACION_PASO   5  // 2 ciclos PWM para estabilizar
+#define SERVO_PASO                         20
 /* ################################################ */
 
 /* ################################################ */

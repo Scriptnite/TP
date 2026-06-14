@@ -11,7 +11,7 @@
 #include "lcd.h"
 #include "../Drivers/inc/manejo_de_bits.h"
 #include "../Drivers/inc/servo.h"
-#include "../Drivers/inc/telemetria.h"
+#include "telemetria.h"
 #include "LPC17xx.h"
 
 #endif
