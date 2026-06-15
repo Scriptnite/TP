@@ -4,6 +4,7 @@
 #include "config.h"
 #include "radar.h"
 #include "teclado.h"
+#include "adc.h"
 #include "dma.h"
 #include "uart0.h"
 #include "servo.h"

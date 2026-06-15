@@ -16,8 +16,8 @@
  */
 void config_DMA_CH0();
 
-void get_velocidad(void);
-void get_servoStep(void);
+uint32_t get_tiempoProcesamiento(void);
+uint32_t get_servoStep(void);
 
 
 

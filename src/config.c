@@ -36,7 +36,8 @@ const char teclado[4][4] = {
 
 /* ################################################ */
 /* Trimmer */
-volatile uint32_t GLOBAL_trimmer[2] = {0x0000, 0x0000} ; //Inicializan en 0 hasta la primera lectura
+volatile uint32_t GLOBAL_lectura_channel0; //Lectura del channel 0 destinada a la velocidad de procesamiento
+volatile uint32_t GLOBAL_lectura_channel1; //Lectura del channel 1 destinada a los grados de step
 /* ################################################ */
 
 

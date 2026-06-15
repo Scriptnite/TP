@@ -100,8 +100,13 @@ extern const char teclado[4][4];
 
 /* ################################################ */
 /* Trimmer */
-#define TRIMMER_MAX_TIEMPO_PROCESAMIENTO 1000 //1000ms = 1s
-extern volatile uint32_t GLOBAL_trimmer[2]; //GLOBAL_trimmer[tiempo_de_procesamiento, set_paso_servo]
+#define TRIMMER_MAX_TIEMPO_PROCESAMIENTO 80000000
+#define TRIMMER_MIN_TIEMPO_PROCESAMIENTO 1000000
+#define TRIMMER_MAX_ANGULO_STEP 20
+#define TRIMMER_MIN_ANGULO_STEP 1
+extern volatile uint32_t GLOBAL_lectura_channel0; //Lectura del channel 0 destinada a la velocidad de procesamiento
+extern volatile uint32_t GLOBAL_lectura_channel1; //Lectura del channel 1 destinada a los grados de step
+
 /* ################################################ */
 
 
