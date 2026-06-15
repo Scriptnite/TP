@@ -23,16 +23,11 @@ int main() {
     RADAR_Init();
     LCD_Init();
 
-
     //LPC_WDT->WDMOD &= ~(1 << 0);
-
 
     while (1) {
         RADAR_Actualizar();
-
-        //ComenzarMedicion();
-
-        //	SERVO_step();
+        //SERVO_step();
 
         for (int i = 0; i < 1000000; i++) {}
     }

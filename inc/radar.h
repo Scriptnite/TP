@@ -21,7 +21,7 @@ void ComenzarMedicion();
 
 /**
  * @brief Inicializa de forma centralizada todos los módulos y periféricos del Radar.
- * @details Llama internamente a las inicializaciones de UART0, Servo (Timer0), Ultrasonido (Timer1), DMA e I2C.
+ * @details Llama internamente a las inicializaciones de UART0, Servo (Timer0), Ultrasonido (Timer2), DMA e I2C.
  */
 void RADAR_Init(void);
 

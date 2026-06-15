@@ -40,7 +40,7 @@ static void i2c_send(MODO modo, uint16_t distancia, uint16_t angulo0, uint16_t a
     char buffer2[10];
     char buffer3[10];
 
-    LCD_Clear();
+    //LCD_Clear();
 
     snprintf(buffer0, sizeof(buffer0), "Modo %c", (char)modo);
     LCD_WRITE(buffer0, 0, 0);

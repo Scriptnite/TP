@@ -24,7 +24,7 @@ volatile Bool GLOBAL_I2C_completado = TRUE;
 /* ################################################ */
 
 /* ################################################ */
-/* Teclado  P2[10:13] INPUT - P2[5:8] OUTPUT */
+/* Teclado  P2[10:13] INPUT - P2[0:3] OUTPUT */
 
 const char teclado[4][4] = {
     {'1', '2', '3', 'A'},

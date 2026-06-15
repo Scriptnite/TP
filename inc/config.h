@@ -62,9 +62,9 @@ extern volatile Bool GLOBAL_I2C_completado;
 
 
 /* ################################################ */
-/* Teclado  P2[10:13] INPUT - P2[5:8] OUTPUT */
+/* Teclado  P2[10:13] INPUT - P2[0:3] OUTPUT */
 #define TECLADO_PORT	            PORT_2 // NO CAMBIAR
-#define TECLADO_FILAS_MASK          (0 | (1 << PIN_5) | (1 << PIN_6) | (1 << PIN_7) | (1 << PIN_8))
+#define TECLADO_FILAS_MASK          (0 | (1 << PIN_0) | (1 << PIN_1) | (1 << PIN_2) | (1 << PIN_3))
 #define TECLADO_COLUMNAS_MASK       (0 | (1 << PIN_10) | (1 << PIN_11) | (1 << PIN_12) | (1 << PIN_13))  // NO CAMBIAR
 #define TECLADO_MS_BARRIDO          25
 #define TECLADO_CONTADOR_DELAY      15
@@ -74,11 +74,11 @@ extern const char teclado[4][4];
 
 /* ################################################ */
 /* Ultrasonido */
-#define ULTRA_TRIG_PORT             PORT_1
-#define ULTRA_TRIG_PIN              PIN_31
+#define ULTRA_TRIG_PORT             PORT_0
+#define ULTRA_TRIG_PIN              PIN_10
 #define ULTRA_TRIG_MASK             (1 << ULTRA_TRIG_PIN)
-#define ULTRA_ECHO_PORT             PORT_1
-#define ULTRA_ECHO_PIN              PIN_18 // CAP1_0
+#define ULTRA_ECHO_PORT             PORT_0
+#define ULTRA_ECHO_PIN              PIN_5 // CAP2_1
 #define ULTRA_TRIG_TIME_US          10  // 10 uS de pulso al trigger
 /* ################################################ */
 
@@ -93,15 +93,8 @@ extern const char teclado[4][4];
 #define SERVO_MIN_PULSE_uS          1000    // 1 ms
 #define SERVO_MAX_PULSE_uS          2000    // 2 ms
 #define SERVO_MASK_PIN              (0 | (1 << SERVO_SIGNAL_PIN))
-#define SERVO_CICLOS_ESTABILIZACION_PASO   5  // 2 ciclos PWM para estabilizar
-#define SERVO_PASO                         20
-/* ################################################ */
-
-/* ################################################ */
-/* Buzzer */
-#define BUZZER_PORT                 PORT_0
-#define BUZZER_PIN                  PIN_9
-#define BUZZER_MASK                 (0 | (1 << BUZZER_PIN))
+#define SERVO_CICLOS_ESTABILIZACION_PASO   2  // 2 ciclos PWM para estabilizar
+#define SERVO_PASO                         25
 /* ################################################ */
 
 /* ################################################ */

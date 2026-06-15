@@ -24,12 +24,12 @@ void ComenzarMedicion() {
     medicion_en_progreso = TRUE;
     echo_listo = FALSE;
 
-    TIM_ResetCounter(LPC_TIM1);
-    TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
-    TIM_ClearIntPending(LPC_TIM1, TIM_CR0_INT);
+    TIM_ResetCounter(LPC_TIM2);
+    TIM_ClearIntPending(LPC_TIM2, TIM_MR0_INT);
+    TIM_ClearIntPending(LPC_TIM2, TIM_CR1_INT);
 
     GPIO_SetPinState(ULTRA_TRIG_PORT, ULTRA_TRIG_PIN, SET);
-    TIM_Enable(LPC_TIM1);
+    TIM_Enable(LPC_TIM2);
 }
 
 void RADAR_Init(void) {
@@ -54,7 +54,7 @@ void RADAR_Init(void) {
     TIM_TIMERCFG_T timerCfg;
     timerCfg.prescaleOpt = TIM_US;
     timerCfg.prescaleValue = 1;
-    TIM_InitTimer(LPC_TIM1, &timerCfg);
+    TIM_InitTimer(LPC_TIM2, &timerCfg);
 
     /* Match 0 Trigger (baja el estado del pin) */
     TIM_MATCHCFG_T matchCfg;
@@ -64,32 +64,32 @@ void RADAR_Init(void) {
     matchCfg.stopEn = DISABLE;
     matchCfg.extOpt = TIM_NOTHING;
     matchCfg.matchValue = ULTRA_TRIG_TIME_US - 2; //-3 por correccion de Delay
-    TIM_ConfigMatch(LPC_TIM1, &matchCfg);
+    TIM_ConfigMatch(LPC_TIM2, &matchCfg);
 
     /* Capture ECHO */
     TIM_CAPTURECFG_T capCfg;
-    capCfg.channel = TIM_CAPTURE_0; // Canal CAP0 del Timer 1
+    capCfg.channel = TIM_CAPTURE_1; // Canal CAP0 del Timer 2
     capCfg.risingEn = ENABLE;
     capCfg.fallingEn = ENABLE;
     capCfg.intEn = ENABLE;
-    TIM_ConfigCapture(LPC_TIM1, &capCfg);
+    TIM_ConfigCapture(LPC_TIM2, &capCfg);
 
-    TIM_PinConfig(TIM_CAP1_0_P1_18);
+    TIM_PinConfig(TIM_CAP2_1_P0_5);
 
-    NVIC_EnableIRQ(TIMER1_IRQn);
-    NVIC_SetPriority(TIMER1_IRQn, 1);
+    NVIC_EnableIRQ(TIMER2_IRQn);
+    NVIC_SetPriority(TIMER2_IRQn, 1);
     /* ################################################ */
 }
 
-void TIMER1_IRQHandler(void) {
-    if (TIM_GetIntStatus(LPC_TIM1, TIM_MR0_INT)) {
+void TIMER2_IRQHandler(void) {
+    if (TIM_GetIntStatus(LPC_TIM2, TIM_MR0_INT)) {
         GPIO_SetPinState(ULTRA_TRIG_PORT, ULTRA_TRIG_PIN, RESET);
-        TIM_ClearIntPending(LPC_TIM1, TIM_MR0_INT);
-        NVIC_ClearPendingIRQ(TIMER1_IRQn);
+        TIM_ClearIntPending(LPC_TIM2, TIM_MR0_INT);
+        NVIC_ClearPendingIRQ(TIMER2_IRQn);
         return;
     }
 
-    const uint32_t tiempo = TIM_GetCaptureValue(LPC_TIM1, TIM_CAPTURE_0);
+    const uint32_t tiempo = TIM_GetCaptureValue(LPC_TIM2, TIM_CAPTURE_1);
 
     if (tiempo_subida == 0) {
         tiempo_subida = tiempo;
@@ -106,15 +106,15 @@ void TIMER1_IRQHandler(void) {
         GLOBAL_medicion_lista = TRUE;
 
         // Apagar timer para evitar re-disparos molestos
-        TIM_Disable(LPC_TIM1);
-        TIM_ResetCounter(LPC_TIM1);
+        TIM_Disable(LPC_TIM2);
+        TIM_ResetCounter(LPC_TIM2);
         medicion_en_progreso = 0;
 
         TELEMETRIA_Actualizar();
     }
 
-    TIM_ClearIntPending(LPC_TIM1, TIM_CR0_INT);
-    NVIC_ClearPendingIRQ(TIMER1_IRQn);
+    TIM_ClearIntPending(LPC_TIM2, TIM_CR1_INT);
+    NVIC_ClearPendingIRQ(TIMER2_IRQn);
 }
 
 
