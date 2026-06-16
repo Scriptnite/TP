@@ -13,5 +13,6 @@
 #include "../Drivers/inc/servo.h"
 #include "telemetria.h"
 #include "LPC17xx.h"
+#include "modos.h"
 
 #endif

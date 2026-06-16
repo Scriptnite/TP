@@ -1,8 +1,12 @@
 #include "lcd.h"
+
+#include <stdio.h>
+
 #include "config.h"
 #include "lpc17xx_i2c.h"
 #include "lpc17xx_pinsel.h"
 #include "lpc17xx_gpio.h"
+#include "telemetria.h"
 
 // Define el estado de los bits de control (P3=1 para luz encendida)
 #define LCD_BACKLIGHT 0x08  // Backlight ON
@@ -122,7 +126,7 @@ void LCD_Init() {
     LCD_Clear(); // Limpia pantalla
     lcd_i2c_SendByte(0x06, COMANDO); // Incremento automático del cursor
 
-    LCD_Clear(); // Limpia pantalla
+    TELEMETRIA_Actualizar();
 }
 
 void LCD_WRITE(const char* datos, uint8_t fila, uint8_t columna) {

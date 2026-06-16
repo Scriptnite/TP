@@ -1,6 +1,7 @@
 #include "config_global.h"
 #include "lpc17xx_pinsel.h"
 #include "lpc17xx_gpio.h"
+#include <stdio.h>
 
 PINSEL_CFG_T LedRojo = (PINSEL_CFG_T){PORT_0, PIN_22, PINSEL_FUNC_00, PINSEL_PULLDOWN, DISABLE};
 PINSEL_CFG_T LedVerde = (PINSEL_CFG_T){PORT_3, PIN_25, PINSEL_FUNC_00, PINSEL_PULLDOWN, DISABLE};
@@ -18,17 +19,36 @@ int main() {
     GPIO_ClearPins(PORT_3, 1 << PIN_26);
 
     iniciarTeclado(TECLADO_MS_BARRIDO);
-    UART0_config(19200);
+    UART0_config(115200);
     SERVO_init();
     RADAR_Init();
     LCD_Init();
+    Modos_init();
 
-    //LPC_WDT->WDMOD &= ~(1 << 0);
+    LPC_WDT->WDMOD &= ~(1 << 0);
 
     while (1) {
         RADAR_Actualizar();
-        //SERVO_step();
+        Modos_bucle();
 
-        for (int i = 0; i < 1000000; i++) {}
+        for (int var = 0; var < 1000000; ++var);
+
+        /*
+                for (int var = 0; var <= 180; var++) {
+                    printf("%u grados\n",var);
+                    SERVO_setAngulo(var);
+                    for (int i = 0; i < 1000000; i++);
+
+                    var +=5;
+                }
+
+                for (int var = 180; var >= 0; var--) {
+                    printf("%u grados\n",var);
+                    SERVO_setAngulo(var);
+                    for (int i = 0; i < 1000000; i++);
+
+                    var-=5;
+                }*/
+
     }
 }

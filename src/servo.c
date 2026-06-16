@@ -2,19 +2,23 @@
 #include "lpc17xx_pinsel.h"
 #include "../inc/servo.h"
 #include "../drivers/inc/servo.h"
+#include <stdlib.h>
 #include "config.h"
 #include "lpc17xx_clkpwr.h"
 #include "lpc17xx_gpio.h"
 #include "LPC17xx_timer.h"
 
-#define anguloActual SERVO_getAnguloDesdePWM(SERVO_MIN_ANGULO, SERVO_MAX_ANGULO, SERVO_MIN_PULSE_uS,  SERVO_MAX_PULSE_uS, servo_radar.pulsoActual)
+#define anguloActual SERVO_getAnguloDesdePulso(SERVO_MIN_ANGULO, SERVO_MAX_ANGULO, SERVO_MIN_PULSE_uS,  SERVO_MAX_PULSE_uS, servo_radar.pulsoActual)
 
 // Contador interno de ciclos de PWM (20 ms cada uno) para la estabilización mecánica
 static volatile uint32_t ciclos_para_estabilizar = 0;
 volatile Bool SERVO_estabilizado = FALSE;
 static ServoRadar_t servo_radar;
+static Bool CompletoBarrido = FALSE;
+static Bool CompletoCiclo = TRUE;
+static volatile uint32_t pulso_pendiente = 0;
 
-void SERVO_init(void) {
+void SERVO_init() {
     /* ################################################ */
     /* PINSEL - GPIO */
     PINSEL_CFG_T pinConfig;
@@ -81,6 +85,18 @@ void SERVO_step() {
 
     uint32_t proximo_pulso = servo_radar.pulsoActual;
 
+    switch (GLOBAL_modo_actual) {
+        case ANGULO_ESPECIFICO:
+
+            break;
+        case DISTANCIA_ESPECIFICA:
+
+            break;
+        case RANGO_DE_ANGULOS:
+
+            break;
+    }
+
     if (servo_radar.direccion == SENTIDO_HORARIO) {
         if (proximo_pulso + servo_radar.paso <= SERVO_MAX_PULSE_uS) {
             proximo_pulso += servo_radar.paso;
@@ -114,35 +130,30 @@ void SERVO_step() {
     NVIC_EnableIRQ(TIMER0_IRQn);
 }
 
-Status SERVO_setAngulo(uint16_t angle) {
-    if (angle > SERVO_MAX_ANGULO) return ERROR;
+void SERVO_setAngulo(uint16_t angulo) {
+    if (angulo < SERVO_MIN_ANGULO) angulo = SERVO_MIN_ANGULO;
+    if (angulo > SERVO_MAX_ANGULO) angulo = SERVO_MAX_ANGULO;
 
-    const uint16_t angulo_previo = anguloActual;
-
-    if (angle == angulo_previo) {
+    if (angulo == anguloActual) {
         SERVO_estabilizado = TRUE;
-        return SUCCESS; // Ya está en ese ángulo
+        return;
     }
 
-    const uint32_t nuevo_pulso =
-        SERVO_MIN_PULSE_uS + ((uint32_t)angle * (SERVO_MAX_PULSE_uS - SERVO_MIN_PULSE_uS)) / 180;
+    const uint16_t angulo_previo = anguloActual;
+    const uint32_t nuevo_pulso = SERVO_getPulsoDesdeAngulo(
+        SERVO_MIN_ANGULO, SERVO_MAX_ANGULO, SERVO_MIN_PULSE_uS, SERVO_MAX_PULSE_uS, angulo);
 
-    servo_radar.pulsoActual = nuevo_pulso;
-    TIM_UpdateMatchValue(LPC_TIM0, TIM_MATCH_0, nuevo_pulso);
+    servo_radar.pulsoActual = nuevo_pulso; // Actualizamos estado lógico
 
-    // --- CÁLCULO DEL TIEMPO DE ESTABILIZACIÓN MECÁNICA ---
-    // Un servo estándar tarda aproximadamente 4 ms por cada 10 grados en moverse.
-    // Para ser seguros, calculamos cuántos ciclos de PWM (20 ms) necesita esperar la CPU.
-    const uint16_t delta_angulo =
-        (angle > angulo_previo)
-            ? (angle - angulo_previo)
-            : (angulo_previo - angle);
-
+    // --- CÁLCULO DE ESTABILIZACIÓN ---
+    const uint16_t delta_angulo = abs(angulo - angulo_previo);
     SERVO_estabilizado = FALSE;
-    // Fórmula empírica segura: Mínimo 2 ciclos (40 ms) + 1 ciclo extra por cada 15 grados de giro
     ciclos_para_estabilizar = 2 + (delta_angulo / 15);
 
-    return SUCCESS;
+    // --- DOBLE BUFFERING ---
+    // En lugar de tocar MR0 o trabar la CPU, solo dejamos el recado.
+    // La interrupción se encargará de actualizar MR0 de forma segura.
+    pulso_pendiente = nuevo_pulso;
 }
 
 /**
@@ -151,24 +162,29 @@ Status SERVO_setAngulo(uint16_t angle) {
  * Cuenta cuántos ciclos pasaron y, al cumplir el tiempo de tránsito,
  * pone SERVO_estabilizado = 1.
  */
-void TIMER0_IRQHandler(void) {
+void TIMER0_IRQHandler() {
     if (TIM_GetIntStatus(LPC_TIM0, TIM_MR0_INT)) {
         // El pulso en ALTO terminó. Pasamos el pin a BAJO.
         GPIO_ClearPins(SERVO_SIGNAL_PORT, SERVO_MASK_PIN);
         TIM_ClearIntPending(LPC_TIM0, TIM_MR0_INT);
     }
-    else {
-        // El período completo de 20 ms terminó. Pasamos el pin a ALTO.
+
+    // Cambiado de "else if" a "if"
+    if (TIM_GetIntStatus(LPC_TIM0, TIM_MR1_INT)) {
+        // --- INICIO EXACTO DEL NUEVO CICLO (TC = 0) ---
         GPIO_SetPins(SERVO_SIGNAL_PORT, SERVO_MASK_PIN);
 
-        // --- CONTROL DE ESTABILIZACIÓN MECÁNICA ---
-        // Se ejecuta exactamente una vez cada 20 ms (al finalizar el ciclo de PWM)
+        // 1. ¿Hay un cambio de ángulo pendiente? Lo aplicamos AQUÍ.
+        if (pulso_pendiente != 0) {
+            TIM_UpdateMatchValue(LPC_TIM0, TIM_MATCH_0, pulso_pendiente);
+            pulso_pendiente = 0; // Borramos el recado
+        }
+
+        // 2. Control de Estabilización Mecánica
         if (ciclos_para_estabilizar > 0) {
             ciclos_para_estabilizar--;
             if (ciclos_para_estabilizar == 0) {
                 SERVO_estabilizado = TRUE;
-
-                //TODO Trigger de medicion del Ultrasonido
             }
         }
 
@@ -176,4 +192,9 @@ void TIMER0_IRQHandler(void) {
     }
 
     NVIC_ClearPendingIRQ(TIMER0_IRQn);
+}
+
+void SERVO_ForzarEspera(uint32_t ciclos) {
+    SERVO_estabilizado = FALSE;
+    ciclos_para_estabilizar = ciclos;
 }

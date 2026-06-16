@@ -3,7 +3,6 @@
 
 #include "lpc_types.h"
 
-// En config.h
 typedef enum {
     SISTEMA_CONFIGURANDO, // Esperando ingresos por teclado
     SISTEMA_INICIANDO_MODO, // Transición para inicializar variables de barrido
@@ -54,12 +53,6 @@ extern volatile uint16_t GLOBAL_ultima_distancia;
 extern volatile uint16_t GLOBAL_ultimo_angulo;
 /* ################################################ */
 
-/* ################################################ */
-/* Banderas de Periféricos de Comunicación */
-extern volatile Bool GLOBAL_DMA_UART_completado;
-extern volatile Bool GLOBAL_I2C_completado;
-/* ################################################ */
-
 
 /* ################################################ */
 /* Teclado  P2[10:13] INPUT - P2[0:3] OUTPUT */
@@ -67,7 +60,7 @@ extern volatile Bool GLOBAL_I2C_completado;
 #define TECLADO_FILAS_MASK          (0 | (1 << PIN_0) | (1 << PIN_1) | (1 << PIN_2) | (1 << PIN_3))
 #define TECLADO_COLUMNAS_MASK       (0 | (1 << PIN_10) | (1 << PIN_11) | (1 << PIN_12) | (1 << PIN_13))  // NO CAMBIAR
 #define TECLADO_MS_BARRIDO          25
-#define TECLADO_CONTADOR_DELAY      15
+#define TECLADO_CONTADOR_DELAY      20 // 3 * 25ms = 75ms (un antirrebote perfecto)
 extern const char teclado[4][4];
 /* ################################################ */
 
@@ -76,7 +69,7 @@ extern const char teclado[4][4];
 /* Ultrasonido */
 #define ULTRA_TRIG_PORT             PORT_0
 #define ULTRA_TRIG_PIN              PIN_10
-#define ULTRA_TRIG_MASK             (1 << ULTRA_TRIG_PIN)
+#define ULTRA_TRIG_MASK             (0 | (1 << ULTRA_TRIG_PIN))
 #define ULTRA_ECHO_PORT             PORT_0
 #define ULTRA_ECHO_PIN              PIN_5 // CAP2_1
 #define ULTRA_TRIG_TIME_US          10  // 10 uS de pulso al trigger
@@ -87,15 +80,16 @@ extern const char teclado[4][4];
 /* Servo Motor */
 #define SERVO_SIGNAL_PORT           PORT_0
 #define SERVO_SIGNAL_PIN            PIN_4
-#define SERVO_SIGNAL_PERIODO_uS     20000   // 20 ms
-#define SERVO_MAX_ANGULO            180     // 180 grados
-#define SERVO_MIN_ANGULO            0       // 0 grados
-#define SERVO_MIN_PULSE_uS          1000    // 1 ms
-#define SERVO_MAX_PULSE_uS          2000    // 2 ms
+#define SERVO_SIGNAL_PERIODO_uS     20000       // 20 ms
+#define SERVO_MAX_ANGULO            180         // 180 grados
+#define SERVO_MIN_ANGULO            0           // 0 grados
+#define SERVO_MIN_PULSE_uS          1000        // 1 ms
+#define SERVO_MAX_PULSE_uS          2000        // 2 ms
 #define SERVO_MASK_PIN              (0 | (1 << SERVO_SIGNAL_PIN))
-#define SERVO_CICLOS_ESTABILIZACION_PASO   2  // 2 ciclos PWM para estabilizar
-#define SERVO_PASO                         25
+#define SERVO_CICLOS_ESTABILIZACION_PASO   5    // 5 ciclos PWM para estabilizar
+#define SERVO_PASO                         5    // 5 grados por movimiento
 /* ################################################ */
+
 
 /* ################################################ */
 /* LCD - I2C */

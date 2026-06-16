@@ -1,7 +1,7 @@
 #include "../inc/servo.h"
 
-uint16_t SERVO_getAnguloDesdePWM(uint16_t anguloMinimo, uint16_t anguloMaximo, uint32_t anchoPulsoMinimo,
-                                 uint32_t anchoPulsoMaximo, uint32_t anchoPulsoActual) {
+uint16_t SERVO_getAnguloDesdePulso(uint16_t anguloMinimo, uint16_t anguloMaximo, uint32_t anchoPulsoMinimo,
+                                   uint32_t anchoPulsoMaximo, uint32_t anchoPulsoActual) {
     // Evitar división por cero si los pulsos límite son iguales
     if (anchoPulsoMaximo <= anchoPulsoMinimo) return anguloMinimo;
 

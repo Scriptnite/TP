@@ -13,7 +13,7 @@
  */
 static void uart_send(MODO modo, uint16_t distancia, uint16_t angulo0, uint16_t angulo1, uint16_t distancia_actual,
                       uint16_t angulo_actual) {
-    char buffer[45];
+    char buffer[25];
     snprintf(
         buffer, sizeof(buffer), "%c,%u,%u,%u,%u,%u\r\n",
         (char)modo, distancia, angulo0, angulo1, distancia_actual, angulo_actual
@@ -35,23 +35,22 @@ static void uart_send(MODO modo, uint16_t distancia, uint16_t angulo0, uint16_t 
  *  - En 1,9 escribe -> a1=<angulo1>
  */
 static void i2c_send(MODO modo, uint16_t distancia, uint16_t angulo0, uint16_t angulo1) {
+    LCD_Clear();
+
     char buffer0[10];
-    char buffer1[10];
-    char buffer2[10];
-    char buffer3[10];
-
-    //LCD_Clear();
-
     snprintf(buffer0, sizeof(buffer0), "Modo %c", (char)modo);
     LCD_WRITE(buffer0, 0, 0);
 
-    snprintf(buffer1, sizeof(buffer1), "dis=%u", distancia);
+    char buffer1[10];
+    snprintf(buffer1, sizeof(buffer1), "dis=%3u", distancia);
     LCD_WRITE(buffer1, 0, 9);
 
-    snprintf(buffer2, sizeof(buffer2), "a0=%u", angulo0);
+    char buffer2[10];
+    snprintf(buffer2, sizeof(buffer2), "a0=%3u", angulo0);
     LCD_WRITE(buffer2, 1, 0);
 
-    snprintf(buffer3, sizeof(buffer3), "a1=%u", angulo1);
+    char buffer3[10];
+    snprintf(buffer3, sizeof(buffer3), "a1=%3u", angulo1);
     LCD_WRITE(buffer3, 1, 9);
 }
 

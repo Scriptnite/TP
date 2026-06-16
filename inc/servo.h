@@ -41,22 +41,29 @@ typedef struct {
  * @details Configura MR1 para resetear el timer a los 20 ms y generar interrupción.
  * Configura MR0 para controlar el ancho del pulso (1 ms a 2 ms).
  */
-void SERVO_init(void);
+void SERVO_init();
 
 /**
  * @brief  Incrementa o decrementa el ancho de pulso del servo para avanzar según su configuración.
  * @details Modifica el registro de Match (MR0) del TIMER0 controlando que no se excedan
  * los límites físicos. Al llegar a un extremo, conmuta automáticamente la dirección de giro.
  */
-void SERVO_step(void);
+void SERVO_step();
 
 /**
  * @brief  Mueve el servomotor a un ángulo específico de forma directa.
  * @details Calcula el ancho de pulso equivalente en microsegundos para el ángulo dado y actualiza el registro MR0. Además, dispara el temporizador de estabilización mecánica (SERVO_estabilizado=0).
- * @param  angle Ángulo deseado para setear en el servomotor (0 a 180).
+ * @param  angulo Ángulo deseado para setear en el servomotor (0 a 180).
  * @return TRUE si el ángulo se seteó con éxito, FALSE si el ángulo estaba fuera de rango.
  */
-Status SERVO_setAngulo(uint16_t angle);
+void SERVO_setAngulo(uint16_t angulo);
 
+
+/**
+ * @brief Fuerza un tiempo de estabilizacion al Servo
+ * @details Esto evita caídas de tensión y elimina el temblor del servo
+ * @param ciclos Cantidad de ciclos de periodo de PWM de estabilizacion
+ */
+void SERVO_ForzarEspera(uint32_t ciclos);
 
 #endif /* SERVO_H_ */

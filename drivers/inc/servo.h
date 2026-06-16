@@ -14,8 +14,8 @@
  * @param  anchoPulsoActual   El ancho de pulso actual que se desea convertir a grados.
  * @return El valor del ángulo calculado en grados (dentro del rango anguloMinimo - anguloMaximo).
  */
-uint16_t SERVO_getAnguloDesdePWM(uint16_t anguloMinimo, uint16_t anguloMaximo, uint32_t anchoPulsoMinimo,
-                                 uint32_t anchoPulsoMaximo, uint32_t anchoPulsoActual);
+uint16_t SERVO_getAnguloDesdePulso(uint16_t anguloMinimo, uint16_t anguloMaximo, uint32_t anchoPulsoMinimo,
+                                   uint32_t anchoPulsoMaximo, uint32_t anchoPulsoActual);
 
 /**
  * @brief  Calcula el ancho de pulso PWM necesario para posicionar el servo en un ángulo específico.
