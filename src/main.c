@@ -30,12 +30,7 @@ int main() {
         RADAR_Actualizar();
         Modos_bucle();
 
-        uint32_t delay = DMA_get_tiempoProcesamiento();
-        uint32_t paso = DMA_get_servoStep();
 
-        //printf("valor: %8u | Paso: %2u\n", delay, paso);
-
-
-        for (int var = 0; var < delay; var++);
+        for (int var = 0; var < DMA_get_tiempoProcesamiento(); var++);
     }
 }
