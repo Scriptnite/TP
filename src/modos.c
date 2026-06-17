@@ -6,7 +6,7 @@
 #include "telemetria.h"
 #include "config.h"
 
-#define MAX_MEDICIONES (((SERVO_MAX_ANGULO - SERVO_MIN_ANGULO) / SERVO_PASO) + 1)
+#define MAX_MEDICIONES (((SERVO_MAX_ANGULO - SERVO_MIN_ANGULO) / TRIMMER_MIN_ANGULO_STEP) + 1)
 
 static MEDICION mediciones_tabla[MAX_MEDICIONES];
 static uint32_t escaneos_count = 0;

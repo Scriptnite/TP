@@ -14,7 +14,20 @@
  * toma el Dato del ADC y lo lleva a una variable global
  * trigger Source ADC - CH_0
  */
-void config_DMA_CH0();
+void DMA_config_CH0();
+
+/**
+ * @brief getter de GLOBAL_trimmer_value_delay
+ * @details
+ */
+uint32_t DMA_get_tiempoProcesamiento(void);
+
+
+/**
+ * @brief getter de GLOBAL_trimmer_value_step
+ * @details
+ */
+uint32_t DMA_get_servoStep(void);
 
 /**
  * @brief Channel 1 = Memoria (TMRx) -> GPIO

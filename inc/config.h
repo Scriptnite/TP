@@ -86,8 +86,8 @@ extern const char teclado[4][4];
 #define SERVO_MIN_PULSE_uS          1000        // 1 ms
 #define SERVO_MAX_PULSE_uS          2000        // 2 ms
 #define SERVO_MASK_PIN              (0 | (1 << SERVO_SIGNAL_PIN))
-#define SERVO_CICLOS_ESTABILIZACION_PASO   5    // 5 ciclos PWM para estabilizar
-#define SERVO_PASO                         5    // 5 grados por movimiento
+#define SERVO_CICLOS_ESTABILIZACION_PASO   3    // 5 ciclos PWM para estabilizar
+extern volatile uint32_t SERVO_PASO;
 /* ################################################ */
 
 
@@ -96,5 +96,17 @@ extern const char teclado[4][4];
 #define LCD_SLAVE_ADDRESS 0x27
 /* ################################################ */
 
+
+/* ################################################ */
+/* Trimmer - ADC */
+#define TRIMMER_MAX_TIEMPO_PROCESAMIENTO 10000000       // Valor maximo para bucle
+#define TRIMMER_MIN_TIEMPO_PROCESAMIENTO 1000        // Valor minimo para bucle
+#define TRIMMER_MAX_ANGULO_STEP 30                      // Valor maximo de SERVO_PASO
+#define TRIMMER_MIN_ANGULO_STEP 1                       // Valor minimo de SERVO_PASO
+extern volatile uint32_t GLOBAL_trimmer_value_delay;
+extern volatile uint32_t GLOBAL_trimmer_value_step;
+extern volatile uint32_t adc_buffer[2];
+extern volatile uint32_t varsADC;
+/* ################################################ */
 
 #endif

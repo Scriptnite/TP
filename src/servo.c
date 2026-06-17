@@ -76,6 +76,10 @@ void SERVO_init() {
     SERVO_estabilizado = TRUE;
 }
 
+void SERVO_actualizarPaso(uint8_t pasoNuevo) {
+    servo_radar.paso = pasoNuevo;
+}
+
 void SERVO_step() {
     if (!SERVO_estabilizado) return;
 

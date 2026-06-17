@@ -17,6 +17,8 @@ volatile uint16_t GLOBAL_ultima_distancia;
 volatile uint16_t GLOBAL_ultimo_angulo;
 /* ################################################ */
 
+volatile uint32_t SERVO_PASO = TRIMMER_MIN_ANGULO_STEP;
+
 
 /* ################################################ */
 /* Teclado  P2[10:13] INPUT - P2[0:3] OUTPUT */
@@ -27,9 +29,12 @@ const char teclado[4][4] = {
     {'7', '8', '9', 'C'},
     {'*', '0', '#', 'D'}
 };
-/* ################################################ */
-
 
 /* ################################################ */
-/* Ultrasonido */
+/* Trimmer - ADC */
+volatile uint32_t GLOBAL_trimmer_value_delay = 1000000;
+volatile uint32_t GLOBAL_trimmer_value_step = 5;
+volatile uint32_t adc_buffer[2];
+volatile uint32_t varsADC;
 /* ################################################ */
+

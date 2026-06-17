@@ -186,12 +186,12 @@ void evaluar(char val) {
 
                     if (GLOBAL_estado_actual == ESPERANDO_PRIMER_DATO) {
                         GLOBAL_angulo0 = temporal;
-                        printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo0 guardado: %d\n", GLOBAL_angulo0);
+                        //printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo0 guardado: %d\n", GLOBAL_angulo0);
                         GLOBAL_estado_actual = ESPERANDO_SEGUNDO_DATO;
                     }
                     else if (GLOBAL_estado_actual == ESPERANDO_SEGUNDO_DATO) {
                         GLOBAL_angulo1 = temporal;
-                        printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo1 guardado: %d\n", GLOBAL_angulo1);
+                        //printf("CONFIRMAR | RANGO_DE_ANGULOS | Angulo1 guardado: %d\n", GLOBAL_angulo1);
                         GLOBAL_estado_actual = ESPERANDO_PRIMER_DATO;
 
                         GLOBAL_estado_sistema = SISTEMA_INICIANDO_MODO; // Trigger
@@ -206,7 +206,7 @@ void evaluar(char val) {
                     buffer_idx = 0; // Limpia el buffer del dato actual
                     GLOBAL_estado_sistema = SISTEMA_CONFIGURANDO;
                     GLOBAL_orden_actual = EN_ESPERA;
-                    printf("CANCELAR | RANGO_DE_ANGULOS | Buffer de rango limpiado.\n");
+                    //printf("CANCELAR | RANGO_DE_ANGULOS | Buffer de rango limpiado.\n");
                     break;
                 }
                 default: break;

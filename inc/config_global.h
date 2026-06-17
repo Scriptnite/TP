@@ -9,10 +9,14 @@
 #include "servo.h"
 #include "radar.h"
 #include "lcd.h"
+#include "adc.h"
+#include "modos.h"
+#include "telemetria.h"
 #include "../Drivers/inc/manejo_de_bits.h"
 #include "../Drivers/inc/servo.h"
-#include "telemetria.h"
 #include "LPC17xx.h"
-#include "modos.h"
+#include "lpc17xx_pinsel.h"
+#include "lpc17xx_gpio.h"
+#include <stdio.h>
 
 #endif

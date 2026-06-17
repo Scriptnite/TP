@@ -1,6 +1,5 @@
 #include "config_global.h"
-#include "lpc17xx_pinsel.h"
-#include "lpc17xx_gpio.h"
+#include "lpc17xx_adc.h"
 #include <stdio.h>
 
 PINSEL_CFG_T LedRojo = (PINSEL_CFG_T){PORT_0, PIN_22, PINSEL_FUNC_00, PINSEL_PULLDOWN, DISABLE};
@@ -24,31 +23,19 @@ int main() {
     RADAR_Init();
     LCD_Init();
     Modos_init();
-
-    LPC_WDT->WDMOD &= ~(1 << 0);
+    ADC_config();
+    DMA_config_CH0();
 
     while (1) {
         RADAR_Actualizar();
         Modos_bucle();
 
-        for (int var = 0; var < 1000000; ++var);
+        uint32_t delay = DMA_get_tiempoProcesamiento();
+        uint32_t paso = DMA_get_servoStep();
 
-        /*
-                for (int var = 0; var <= 180; var++) {
-                    printf("%u grados\n",var);
-                    SERVO_setAngulo(var);
-                    for (int i = 0; i < 1000000; i++);
+        //printf("valor: %8u | Paso: %2u\n", delay, paso);
 
-                    var +=5;
-                }
 
-                for (int var = 180; var >= 0; var--) {
-                    printf("%u grados\n",var);
-                    SERVO_setAngulo(var);
-                    for (int i = 0; i < 1000000; i++);
-
-                    var-=5;
-                }*/
-
+        for (int var = 0; var < delay; var++);
     }
 }

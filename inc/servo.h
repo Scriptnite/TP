@@ -50,6 +50,8 @@ void SERVO_init();
  */
 void SERVO_step();
 
+void SERVO_actualizarPaso(uint8_t pasoNuevo);
+
 /**
  * @brief  Mueve el servomotor a un ángulo específico de forma directa.
  * @details Calcula el ancho de pulso equivalente en microsegundos para el ángulo dado y actualiza el registro MR0. Además, dispara el temporizador de estabilización mecánica (SERVO_estabilizado=0).
