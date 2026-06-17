@@ -18,7 +18,8 @@ int main() {
     GPIO_ClearPins(PORT_3, 1 << PIN_26);
 
     iniciarTeclado(TECLADO_MS_BARRIDO);
-    UART0_config(115200);
+    //UART0_config(115200);
+    UART0_config_dma(115200);
     SERVO_init();
     RADAR_Init();
     LCD_Init();
@@ -29,7 +30,7 @@ int main() {
     while (1) {
         RADAR_Actualizar();
         Modos_bucle();
-
+        DMA_get_servoStep();
 
         for (int var = 0; var < DMA_get_tiempoProcesamiento(); var++);
     }

@@ -3,6 +3,7 @@
 #include "uart0.h"
 #include "config.h"
 #include "lcd.h"
+#include "lpc17xx_gpdma.h"
 
 /* ============================================================================ */
 /* FUNCIONES PRIVADAS (senders a cada canal) */
@@ -54,28 +55,49 @@ static void i2c_send(MODO modo, uint16_t distancia, uint16_t angulo0, uint16_t a
     LCD_WRITE(buffer3, 1, 9);
 }
 
-/**
- * @brief Envía a display 7-segmentos (implementar según tu driver)
- */
-static void display_send(MODO modo, uint16_t distancia, uint16_t angulo0, uint16_t angulo1) {
-    // TODO: Implementar envío a display 7-segmentos
-    // Placeholder: no hace nada por ahora
-    (void)modo;
-    (void)distancia;
-    (void)angulo0;
-    (void)angulo1;
+
+static void uart_dma_send(MODO modo, uint16_t distancia, uint16_t angulo0, uint16_t angulo1, uint16_t distancia_actual,
+                          uint16_t angulo_actual) {
+    uint32_t longitud = snprintf(
+        bufferUART,
+        UART_BUFFER_SIZE,
+        "%c,%u,%u,%u,%u,%u\r\n",
+        (char)modo,
+        distancia,
+        angulo0,
+        angulo1,
+        distancia_actual,
+        angulo_actual
+    );
+
+    if (longitud >= UART_BUFFER_SIZE) longitud = UART_BUFFER_SIZE - 1;
+
+    UART0_iniciarTX(longitud);
 }
 
 /* ============================================================================ */
 
 void TELEMETRIA_Actualizar() {
-    uart_send(GLOBAL_modo_actual, GLOBAL_distancia, GLOBAL_angulo0, GLOBAL_angulo1, GLOBAL_ultima_distancia,
-              GLOBAL_ultimo_angulo);
+    /*
+    uart_send(
+        GLOBAL_modo_actual, GLOBAL_distancia,
+        GLOBAL_angulo0, GLOBAL_angulo1,
+        GLOBAL_ultima_distancia,
+        GLOBAL_ultimo_angulo
+    );
+    */
+
+    uart_dma_send(
+        GLOBAL_modo_actual, GLOBAL_distancia,
+        GLOBAL_angulo0, GLOBAL_angulo1,
+        GLOBAL_ultima_distancia,
+        GLOBAL_ultimo_angulo
+    );
+
     i2c_send(GLOBAL_modo_actual, GLOBAL_distancia, GLOBAL_angulo0, GLOBAL_angulo1);
-    //display_send(GLOBAL_modo_actual, GLOBAL_distancia, GLOBAL_angulo0, GLOBAL_angulo1);
 }
 
-//TODO revisar
+// TODO implementar
 void TELEMETRIA_procesarRecibido(const char* data) {
     if (data == NULL) return;
 

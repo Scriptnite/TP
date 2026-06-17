@@ -21,6 +21,12 @@ volatile uint32_t SERVO_PASO = TRIMMER_MIN_ANGULO_STEP;
 
 
 /* ################################################ */
+/* UART */
+volatile uint8_t bufferUART[UART_BUFFER_SIZE];
+/* ################################################ */
+
+
+/* ################################################ */
 /* Teclado  P2[10:13] INPUT - P2[0:3] OUTPUT */
 
 const char teclado[4][4] = {

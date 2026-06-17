@@ -55,7 +55,7 @@ extern volatile uint16_t GLOBAL_ultimo_angulo;
 
 
 /* ################################################ */
-/* Teclado  P2[10:13] INPUT - P2[0:3] OUTPUT */
+/* Teclado  P2[10:13] OUTPUT - P2[0:3] INPUT */
 #define TECLADO_PORT	            PORT_2 // NO CAMBIAR
 #define TECLADO_FILAS_MASK          (0 | (1 << PIN_0) | (1 << PIN_1) | (1 << PIN_2) | (1 << PIN_3))
 #define TECLADO_COLUMNAS_MASK       (0 | (1 << PIN_10) | (1 << PIN_11) | (1 << PIN_12) | (1 << PIN_13))  // NO CAMBIAR
@@ -98,9 +98,21 @@ extern volatile uint32_t SERVO_PASO;
 
 
 /* ################################################ */
+/* UART */
+#define UART_BUFFER_SIZE 25
+extern volatile uint8_t bufferUART[UART_BUFFER_SIZE];
+/* ################################################ */
+
+/* ################################################ */
+/* DMA Canales */
+#define DMA_canal_UART0     (GPDMA_CH) GPDMA_CH_1
+#define DMA_canal_ADC       (GPDMA_CH) GPDMA_CH_0
+/* ################################################ */
+
+/* ################################################ */
 /* Trimmer - ADC */
-#define TRIMMER_MAX_TIEMPO_PROCESAMIENTO 10000000       // Valor maximo para bucle
-#define TRIMMER_MIN_TIEMPO_PROCESAMIENTO 1000        // Valor minimo para bucle
+#define TRIMMER_MAX_TIEMPO_PROCESAMIENTO 1000000       // Valor maximo para bucle
+#define TRIMMER_MIN_TIEMPO_PROCESAMIENTO 500        // Valor minimo para bucle
 #define TRIMMER_MAX_ANGULO_STEP 30                      // Valor maximo de SERVO_PASO
 #define TRIMMER_MIN_ANGULO_STEP 1                       // Valor minimo de SERVO_PASO
 extern volatile uint32_t GLOBAL_trimmer_value_delay;

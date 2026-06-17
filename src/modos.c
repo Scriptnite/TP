@@ -266,14 +266,14 @@ void Modos_bucle() {
 
                         angulo_actual = mediciones_tabla[best_index_encontrado].ANGULO;
 
-                        printf("\r\n========================================\r\n");
-                        printf(" ESCANEO COMPLETADO (Ida y Vuelta)\r\n");
-                        printf(" Distancia Buscada: %d cm\r\n", target);
-                        printf(" Mejor Coincidencia: %d cm (Error: %d cm)\r\n",
-                               mediciones_tabla[best_index_encontrado].DISTANCIA, best_diff);
-                        printf(" Posicion Encontrada: %d grados\r\n", angulo_actual);
-                        printf(" Moviendo servo al objetivo...\r\n");
-                        printf("========================================\r\n");
+                        //printf("\r\n========================================\r\n");
+                        //printf(" ESCANEO COMPLETADO (Ida y Vuelta)\r\n");
+                        //printf(" Distancia Buscada: %d cm\r\n", target);
+                        //printf(" Mejor Coincidencia: %d cm (Error: %d cm)\r\n",
+                        //mediciones_tabla[best_index_encontrado].DISTANCIA, best_diff);
+                        //printf(" Posicion Encontrada: %d grados\r\n", angulo_actual);
+                        // printf(" Moviendo servo al objetivo...\r\n");
+                        //printf("========================================\r\n");
 
                         DISTANCIA_ESPECIFICA_ESTADO = DISTANCIA_MOVIENDO_RESULTADO;
                         break;

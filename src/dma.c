@@ -2,6 +2,7 @@
 #include "LPC17xx.h"
 #include "lpc17xx_gpdma.h"
 #include "servo.h"
+#include "config.h"
 
 // Size = 1, Src_Width = WORD, Dst_Width = WORD
 #define def_control 0 | 1 | (1 << 19) | (1 << 22) | (0 << 27)
@@ -13,7 +14,7 @@ void DMA_config_CH0(void) {
     GPDMA_Init();
 
     GPDMA_Channel_CFG_T dmaCfg;
-    dmaCfg.channelNum = GPDMA_CH_0;
+    dmaCfg.channelNum = DMA_canal_ADC;
     dmaCfg.transferSize = 1;
     dmaCfg.type = GPDMA_P2M;
     dmaCfg.srcMemAddr = (uint32_t)&LPC_ADC->ADDR0;
@@ -56,7 +57,7 @@ void DMA_config_CH0(void) {
     dmaCfg.linkedList = (uint32_t)&lli2;
 
     GPDMA_SetupChannel(&dmaCfg);
-    GPDMA_ChannelStart(GPDMA_CH_0);
+    GPDMA_ChannelStart(DMA_canal_ADC);
 }
 
 

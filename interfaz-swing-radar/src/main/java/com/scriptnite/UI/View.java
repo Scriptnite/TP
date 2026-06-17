@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
+import com.scriptnite.Modos;
 import com.scriptnite.Service.UartManager;
 
 public class View extends JPanel {
@@ -39,13 +40,20 @@ public class View extends JPanel {
 	private JScrollPane containerUARTConsoleScrollPane;
 	private final RadarPanel radarPanel = new RadarPanel();
 
+	// Variables para almacenar datos UART del nuevo formato
+	private Modos modo;
+	private int distancia;
+	private int angulo0;
+	private int angulo1;
+	private int distancia_actual;
+	private int angulo_actual;
+
 	public View(boolean isDoubleBuffered) {
 		super(isDoubleBuffered);
 		initComponents();
 		initListeners();
 
 		contentGraphPanel.add(radarPanel);
-
 	}
 
 	void initComponents() {
@@ -58,7 +66,7 @@ public class View extends JPanel {
 		}
 
 		/* Init baudios Combo Box */
-		baudiosComboBox.setSelectedItem("9600");
+		baudiosComboBox.setSelectedItem("115200");
 
 
 		DefaultCaret caret = (DefaultCaret) UARTConsoleTextArea.getCaret();
@@ -70,10 +78,8 @@ public class View extends JPanel {
 		puertoComboBox.addActionListener(_ -> {
 			String puertoSeleccionado = (String) puertoComboBox.getSelectedItem();
 
-			// CONTROL ANTINULOS: Si el usuario seleccionó la opción vacía (null), no hacemos nada
-			if (puertoSeleccionado == null){
-				return;
-			}
+			if (puertoSeleccionado == null) return;
+
 
 			int baudios = Integer.parseInt((String) Objects.requireNonNull(baudiosComboBox.getSelectedItem()));
 
@@ -86,15 +92,32 @@ public class View extends JPanel {
 					// Procesar y actualizar el radar
 					try {
 						String[] partes = linea.split(",");
-						int angulo = Integer.parseInt(partes[0].trim());
-						int distancia = Integer.parseInt(partes[1].trim());
 
-						radarPanel.actualizarDato(angulo, distancia);
+						// Nuevo formato: <modo>,<distancia>,<angulo0>,<angulo1>,<distancia_actual>,<angulo_actual>
+						modo = Modos.fromId(partes[0].trim());
+						distancia = Integer.parseInt(partes[1].trim());
+						angulo0 = Integer.parseInt(partes[2].trim());
+						angulo1 = Integer.parseInt(partes[3].trim());
+						distancia_actual = Integer.parseInt(partes[4].trim());
+						angulo_actual = Integer.parseInt(partes[5].trim());
+
+						// Actualizar el radar con los datos actuales
+						radarPanel.actualizarDato(angulo_actual, distancia_actual);
 					} catch (Exception ex) {
 						UARTConsoleTextArea.append("[ERROR PARSEO] " + ex.getMessage() + "\n");
 					}
 
 					UARTConsoleTextArea.setCaretPosition(UARTConsoleTextArea.getDocument().getLength());
+
+
+					if (modo == Modos.DISTANCIA_ESPECIFICA){
+						resultadoContentLabel.setText("Distancia mas cercana a " + distancia + " cm es " + distancia_actual + "cm en el angulo "  + angulo_actual);
+					} else if(modo == Modos.RANGO_DE_ANGULOS){
+						resultadoContentLabel.setText("Moviendo el servo entre " + angulo0 + " y " + angulo1 + "\n Distancia medida: " + distancia_actual);
+					}else {
+						resultadoContentLabel.setText("Midiendo en el angulo " + angulo_actual + "\n Distancia medida: " + distancia_actual);
+					}
+
 				});
 			});
 
@@ -102,7 +125,7 @@ public class View extends JPanel {
 			boolean exito = instanciaUART.conectar(puertoSeleccionado, baudios);
 
 			if (exito){
-				JOptionPane.showMessageDialog(this, "Conectado exitosamente al LPC1769");
+				JOptionPane.showMessageDialog(this, "Conectado exitosamente a la LPC1769");
 			} else {
 				JOptionPane.showMessageDialog(this, "Error al abrir el puerto", "Error", JOptionPane.ERROR_MESSAGE);
 			}
@@ -121,5 +144,29 @@ public class View extends JPanel {
 
 	public RadarPanel getRadarPanel() {
 		return radarPanel;
+	}
+
+	public Modos getModo() {
+		return modo;
+	}
+
+	public int getDistancia() {
+		return distancia;
+	}
+
+	public int getAngulo0() {
+		return angulo0;
+	}
+
+	public int getAngulo1() {
+		return angulo1;
+	}
+
+	public int getDistancia_actual() {
+		return distancia_actual;
+	}
+
+	public int getAngulo_actual() {
+		return angulo_actual;
 	}
 }

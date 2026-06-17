@@ -3,8 +3,6 @@ package com.scriptnite.Service;
 import com.fazecast.jSerialComm.SerialPort;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -49,14 +47,24 @@ public class UartManager {
 
 		puertoActivo = SerialPort.getCommPort(nombrePuerto);
 		puertoActivo.setBaudRate(baudRate);
+		puertoActivo.setNumDataBits(8);
+		puertoActivo.setNumStopBits(1);
+		puertoActivo.setParity(0); // Sin paridad
 
-		// Configurar Timeouts para evitar que el hilo se quede eternamente trabado
-		puertoActivo.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 100, 0);
+		// Configurar Timeouts: tiempo de lectura corto para no bloquear
+		// TIMEOUT_READ_SEMI_BLOCKING: devuelve de inmediato si hay datos, espera si no
+		puertoActivo.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
 
 		// Intentar abrir el puerto
 		if (puertoActivo.openPort()) {
 			puertoActivo.setDTR(); // Activa Data Terminal Ready
 			puertoActivo.setRTS(); // Activa Request To Send
+
+			try {
+				Thread.sleep(200); // Esperar a que el LPC1769 se reinicie por DTR
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
 
 			conectado = true;
 			iniciarHiloLectura(); // Arranca el hilo secundario
@@ -84,24 +92,47 @@ public class UartManager {
 
 	private void iniciarHiloLectura() {
 		hiloLectura = new Thread(() -> {
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(puertoActivo.getInputStream()))) {
-				while (conectado && !Thread.currentThread().isInterrupted()) {
-					// Se queda bloqueado aquí esperando un salto de línea '\n' del LPC1769
-					if (reader.ready() || puertoActivo.bytesAvailable() > 0){
-						String linea = reader.readLine();
-						if (linea != null && !linea.trim().isEmpty()){
-							// Si hay un callback registrado, le mandamos la línea recibida
-							if (onDataReceivedCallback != null){
+			StringBuilder lineBuffer = new StringBuilder();
+			byte[] buffer = new byte[1024];
+
+			while (conectado && !Thread.currentThread().isInterrupted()) {
+				try {
+					// Leer bytes disponibles directamente del puerto
+					int bytesRead = puertoActivo.readBytes(buffer, buffer.length);
+
+					if (bytesRead > 0) {
+						// Convertir bytes a String
+						String datos = new String(buffer, 0, bytesRead);
+						lineBuffer.append(datos);
+
+						// Procesar líneas completas (separadas por '\n')
+						String contenido = lineBuffer.toString();
+						int indexNewline;
+
+						while ((indexNewline = contenido.indexOf('\n')) != -1) {
+							String linea = contenido.substring(0, indexNewline).trim();
+
+							if (!linea.isEmpty() && onDataReceivedCallback != null) {
+								System.out.println("[UART RX] " + linea); // Debug
 								onDataReceivedCallback.accept(linea);
 							}
+
+							// Eliminar la línea procesada del buffer
+							contenido = contenido.substring(indexNewline + 1);
 						}
+
+						lineBuffer = new StringBuilder(contenido);
 					}
+
 					//noinspection BusyWait
 					Thread.sleep(10); // Pequeño respiro para la CPU
+
+				} catch (Exception e) {
+					System.err.println("Error en el hilo de lectura UART: " + e.getMessage());
+					e.printStackTrace();
+					conectado = false;
+					break;
 				}
-			} catch (Exception e) {
-				System.err.println("Error en el hilo de lectura UART: " + e.getMessage());
-				conectado = false;
 			}
 		});
 		hiloLectura.setName("Hilo-UART-LPC1769");

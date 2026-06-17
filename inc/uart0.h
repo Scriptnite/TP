@@ -1,6 +1,7 @@
 #ifndef TP_UART0_H
 #define TP_UART0_H
 #include "LPC17xx.h"
+#include "lpc17xx_gpdma.h"
 
 /**
  *
@@ -8,6 +9,10 @@
  * Valores posibles: 2400, 4800, 9600, 19200, 38400, 57600, 115200
  */
 void UART0_config(uint32_t baudRate);
+
+void UART0_iniciarTX(uint32_t longitud);
+
+void UART0_config_dma(uint32_t baudRate);
 
 /**
  * @brief Envía una cadena formateada por el puerto UART0 (Estilo printf).

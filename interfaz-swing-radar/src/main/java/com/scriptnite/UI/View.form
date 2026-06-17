@@ -412,13 +412,14 @@
                   <forms defaultalign-horz="false"/>
                 </constraints>
                 <properties>
-                  <font name="Consolas" size="14" style="2"/>
+                  <font name="Consolas" size="15" style="2"/>
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="0"/>
-                  <maximumSize width="1000" height="0"/>
-                  <minimumSize width="-1" height="75"/>
-                  <preferredSize width="350" height="75"/>
+                  <maximumSize width="450" height="100"/>
+                  <minimumSize width="-1" height="100"/>
+                  <preferredSize width="450" height="100"/>
                   <text value=""/>
+                  <verticalAlignment value="1"/>
                 </properties>
               </component>
             </children>
